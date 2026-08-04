@@ -1,0 +1,12 @@
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/bin/Debug/net9.0/Identity.Domain.deps.json
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/bin/Debug/net9.0/Identity.Domain.dll
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/bin/Debug/net9.0/Identity.Domain.pdb
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/Identity.Domain.csproj.AssemblyReference.cache
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/Identity.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/Identity.Domain.AssemblyInfoInputs.cache
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/Identity.Domain.AssemblyInfo.cs
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/Identity.Domain.csproj.CoreCompileInputs.cache
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/Identity.Domain.dll
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/refint/Identity.Domain.dll
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/Identity.Domain.pdb
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/ref/Identity.Domain.dll

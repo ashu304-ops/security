@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
+      "PackagePath": "staticwebassets/admin.html"
+    },
+    {
+      "Id": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "PackagePath": "staticwebassets/staff.html"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.Identity.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.Identity.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.build.Identity.API.props",
+      "PackagePath": "build\\Identity.API.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.Identity.API.props",
+      "PackagePath": "buildMultiTargeting\\Identity.API.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.Identity.API.props",
+      "PackagePath": "buildTransitive\\Identity.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

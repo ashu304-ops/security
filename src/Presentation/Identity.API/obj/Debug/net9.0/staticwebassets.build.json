@@ -1,0 +1,702 @@
+{
+  "Version": 1,
+  "Hash": "27DYY6UE0goKADn7K+/KZk1Bz29ZSBs/VM75Dr8II1U=",
+  "Source": "Identity.API",
+  "BasePath": "_content/Identity.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Identity.API/wwwroot",
+      "Source": "Identity.API",
+      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/",
+      "BasePath": "_content/Identity.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
+      "SourceId": "Identity.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/Identity.API",
+      "RelativePath": "admin#[.{fingerprint=elaubcpvom}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "86qvjdwuzz",
+      "Integrity": "wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html"
+    },
+    {
+      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "SourceId": "Identity.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/Identity.API",
+      "RelativePath": "staff#[.{fingerprint=4t4fko9das}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "81q7y19ifv",
+      "Integrity": "jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html"
+    },
+    {
+      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
+      "SourceId": "Identity.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/",
+      "BasePath": "_content/Identity.API",
+      "RelativePath": "admin#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "elaubcpvom",
+      "Integrity": "InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/admin.html"
+    },
+    {
+      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "SourceId": "Identity.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/",
+      "BasePath": "_content/Identity.API",
+      "RelativePath": "staff#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "4t4fko9das",
+      "Integrity": "GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/staff.html"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "admin.elaubcpvom.html",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000249066002"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4014"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "elaubcpvom"
+        },
+        {
+          "Name": "label",
+          "Value": "admin.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ="
+        }
+      ]
+    },
+    {
+      "Route": "admin.elaubcpvom.html",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "14297"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "elaubcpvom"
+        },
+        {
+          "Name": "label",
+          "Value": "admin.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ="
+        }
+      ]
+    },
+    {
+      "Route": "admin.elaubcpvom.html.gz",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4014"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "elaubcpvom"
+        },
+        {
+          "Name": "label",
+          "Value": "admin.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E="
+        }
+      ]
+    },
+    {
+      "Route": "admin.html",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000249066002"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4014"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ="
+        }
+      ]
+    },
+    {
+      "Route": "admin.html",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "14297"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ="
+        }
+      ]
+    },
+    {
+      "Route": "admin.html.gz",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4014"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E="
+        }
+      ]
+    },
+    {
+      "Route": "staff.4t4fko9das.html",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000316656111"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3157"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4t4fko9das"
+        },
+        {
+          "Name": "label",
+          "Value": "staff.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg="
+        }
+      ]
+    },
+    {
+      "Route": "staff.4t4fko9das.html",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9412"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4t4fko9das"
+        },
+        {
+          "Name": "label",
+          "Value": "staff.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg="
+        }
+      ]
+    },
+    {
+      "Route": "staff.4t4fko9das.html.gz",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3157"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4t4fko9das"
+        },
+        {
+          "Name": "label",
+          "Value": "staff.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g="
+        }
+      ]
+    },
+    {
+      "Route": "staff.html",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000316656111"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3157"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg="
+        }
+      ]
+    },
+    {
+      "Route": "staff.html",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9412"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg="
+        }
+      ]
+    },
+    {
+      "Route": "staff.html.gz",
+      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3157"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g="
+        }
+      ]
+    }
+  ]
+}
