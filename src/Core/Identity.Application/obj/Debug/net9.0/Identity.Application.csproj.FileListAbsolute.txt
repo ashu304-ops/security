@@ -13,3 +13,4 @@
 /home/ashish/Identity.Solution/src/Core/Identity.Application/obj/Debug/net9.0/refint/Identity.Application.dll
 /home/ashish/Identity.Solution/src/Core/Identity.Application/obj/Debug/net9.0/Identity.Application.pdb
 /home/ashish/Identity.Solution/src/Core/Identity.Application/obj/Debug/net9.0/ref/Identity.Application.dll
+/home/ashish/Identity.Solution/src/Core/Identity.Application/obj/Debug/net9.0/Identity.Application.sourcelink.json

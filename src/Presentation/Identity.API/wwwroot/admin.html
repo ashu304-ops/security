@@ -152,7 +152,8 @@
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:5097/api';
+    // Updated to point to Security Microservice on Docker Port 8137
+    const API_BASE = 'http://localhost:8137/api';
     let token = localStorage.getItem('admin_token');
 
     function showNotification(msg, isError = false) {

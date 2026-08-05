@@ -114,3 +114,4 @@
 /home/ashish/Identity.Solution/src/Presentation/Identity.AdminPortal/obj/Debug/net9.0/Identity.AdminPortal.pdb
 /home/ashish/Identity.Solution/src/Presentation/Identity.AdminPortal/obj/Debug/net9.0/Identity.AdminPortal.genruntimeconfig.cache
 /home/ashish/Identity.Solution/src/Presentation/Identity.AdminPortal/obj/Debug/net9.0/ref/Identity.AdminPortal.dll
+/home/ashish/Identity.Solution/src/Presentation/Identity.AdminPortal/obj/Debug/net9.0/Identity.AdminPortal.sourcelink.json

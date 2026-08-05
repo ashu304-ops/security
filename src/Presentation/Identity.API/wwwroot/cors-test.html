@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CORS & JWT Integration Test (Port 7089 Demo)</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 2rem; background: #f4f6f9; color: #0f172a; }
+    .card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 1rem; max-width: 650px; border: 1px solid #e2e8f0; }
+    button { background: #2563eb; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 600; margin-right: 0.5rem; }
+    button:hover { background: #1d4ed8; }
+    pre { background: #1e293b; color: #38bdf8; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+    .status-ok { color: #16a34a; font-weight: bold; margin-top: 0.5rem; }
+    .status-err { color: #dc2626; font-weight: bold; margin-top: 0.5rem; }
+    .endpoint-badge { background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+  <h2>CORS & JWT Verification Suite</h2>
+  <p style="margin-bottom: 1.5rem; color: #64748b;">Target Demo Origin: <span id="active-origin" class="endpoint-badge">http://localhost:7089</span></p>
+
+  <div class="card">
+    <h3>Step 1: Authenticate & Obtain JWT</h3>
+    <button onclick="testLogin()">1. Get JWT Token</button>
+    <div id="login-status"></div>
+  </div>
+
+  <div class="card">
+    <h3>Step 2: Test Protected Business API Endpoint</h3>
+    <button onclick="testMiddlewareCall()">2. Call Protected API (/api/Enquiry)</button>
+    <div id="middleware-status"></div>
+  </div>
+
+  <div class="card">
+    <h3>Response Console</h3>
+    <pre id="output">Click a button above to run the test...</pre>
+  </div>
+
+  <script>
+    let acquiredToken = "";
+    const DEMO_BASE_URL = "http://localhost:7089";
+
+    async function testLogin() {
+      const output = document.getElementById('output');
+      const status = document.getElementById('login-status');
+      const targetUrl = `${DEMO_BASE_URL}/api/Auth/login`;
+
+      output.innerText = `Sending auth POST request to ${targetUrl}...`;
+
+      try {
+        const response = await fetch(targetUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: 'admin@computerseekho.com',
+            password: 'Admin@1234'
+          })
+        });
+
+        const data = await response.json();
+        output.innerText = JSON.stringify(data, null, 2);
+
+        if (response.ok && data.success) {
+          acquiredToken = data.data.token;
+          status.innerHTML = `<p class="status-ok">✔ Step 1 Passed: JWT Token acquired!</p>`;
+        } else {
+          status.innerHTML = `<p class="status-err">✖ Auth Failed: ${data.message || 'Check credentials'}</p>`;
+        }
+      } catch (err) {
+        output.innerText = err.toString();
+        status.innerHTML = `<p class="status-err">✖ Failed to connect to ${DEMO_BASE_URL}</p>`;
+      }
+    }
+
+    async function testMiddlewareCall() {
+      const output = document.getElementById('output');
+      const status = document.getElementById('middleware-status');
+      const targetUrl = `${DEMO_BASE_URL}/api/Enquiry`;
+
+      if (!acquiredToken) {
+        alert('Please run Step 1 first to generate a JWT token!');
+        return;
+      }
+
+      output.innerText = `Sending Authorization header [Bearer token] to ${targetUrl}...`;
+
+      try {
+        const response = await fetch(targetUrl, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${acquiredToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+        output.innerText = JSON.stringify(data, null, 2);
+
+        if (response.ok) {
+          status.innerHTML = `<p class="status-ok">✔ Step 2 Passed: CORS & Bearer Token validated on port 7089!</p>`;
+        } else {
+          status.innerHTML = `<p class="status-err">✖ Rejected with HTTP ${response.status}</p>`;
+        }
+      } catch (err) {
+        output.innerText = err.toString();
+        status.innerHTML = `<p class="status-err">✖ CORS or connection error on ${targetUrl}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>

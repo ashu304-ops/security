@@ -13,3 +13,4 @@
 /home/ashish/Identity.Solution/src/Presentation/Identity.Contracts/obj/Debug/net9.0/refint/Identity.Contracts.dll
 /home/ashish/Identity.Solution/src/Presentation/Identity.Contracts/obj/Debug/net9.0/Identity.Contracts.pdb
 /home/ashish/Identity.Solution/src/Presentation/Identity.Contracts/obj/Debug/net9.0/ref/Identity.Contracts.dll
+/home/ashish/Identity.Solution/src/Presentation/Identity.Contracts/obj/Debug/net9.0/Identity.Contracts.sourcelink.json

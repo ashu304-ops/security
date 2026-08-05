@@ -1,0 +1,37 @@
+services:
+  identity_db:
+    image: mysql:8.0
+    container_name: identity_mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "Ashu@1234"
+      MYSQL_DATABASE: "ComputerSeekhoIdentityDb"
+    ports:
+      - "3306:3306"
+    volumes:
+      - identity_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p'Ashu@1234' || exit 1"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  identity_api:
+    image: ashu304/computerseekho-identity:latest
+    container_name: identity_security_api
+    restart: always
+    ports:
+      - "8137:8080"
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=identity_db;Database=ComputerSeekhoIdentityDb;User=root;Password=Ashu@1234;"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      Jwt__SecretKey: "SuperSecretKeyAtLeast256BitsLongForHmacSha256Security!"
+      Jwt__Issuer: "Identity.API"
+      Jwt__Audience: "ComputerSeekho.Client"
+    depends_on:
+      identity_db:
+        condition: service_healthy
+
+volumes:
+  identity_mysql_data:

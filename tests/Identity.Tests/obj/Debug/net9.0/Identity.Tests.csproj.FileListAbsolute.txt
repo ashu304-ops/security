@@ -153,3 +153,4 @@
 /home/ashish/Identity.Solution/tests/Identity.Tests/obj/Debug/net9.0/Identity.Tests.pdb
 /home/ashish/Identity.Solution/tests/Identity.Tests/obj/Debug/net9.0/Identity.Tests.genruntimeconfig.cache
 /home/ashish/Identity.Solution/tests/Identity.Tests/obj/Debug/net9.0/ref/Identity.Tests.dll
+/home/ashish/Identity.Solution/tests/Identity.Tests/obj/Debug/net9.0/Identity.Tests.sourcelink.json

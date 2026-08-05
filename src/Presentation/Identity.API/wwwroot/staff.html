@@ -128,7 +128,8 @@
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:5097/api';
+    // Updated to point to Security Microservice on Docker Port 8137
+    const API_BASE = 'http://localhost:8137/api';
     let token = localStorage.getItem('staff_token');
 
     function showNotification(msg, isError = false) {
@@ -166,7 +167,7 @@
       if (res && res.success) {
         const roles = res.data.roles || [];
 
-        // STRICT CHECK: Reject SuperAdmins from logging into the staff portal
+        // Reject SuperAdmins from logging into the staff portal
         if (roles.includes('SuperAdmin')) {
           showNotification('SuperAdmins must log in through the Admin Portal (/admin.html).', true);
           return;

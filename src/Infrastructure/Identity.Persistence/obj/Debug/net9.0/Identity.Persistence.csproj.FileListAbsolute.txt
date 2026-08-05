@@ -17,3 +17,4 @@
 /home/ashish/Identity.Solution/src/Infrastructure/Identity.Persistence/obj/Debug/net9.0/Identity.Persistence.pdb
 /home/ashish/Identity.Solution/src/Infrastructure/Identity.Persistence/obj/Debug/net9.0/Identity.Persistence.genruntimeconfig.cache
 /home/ashish/Identity.Solution/src/Infrastructure/Identity.Persistence/obj/Debug/net9.0/ref/Identity.Persistence.dll
+/home/ashish/Identity.Solution/src/Infrastructure/Identity.Persistence/obj/Debug/net9.0/Identity.Persistence.sourcelink.json

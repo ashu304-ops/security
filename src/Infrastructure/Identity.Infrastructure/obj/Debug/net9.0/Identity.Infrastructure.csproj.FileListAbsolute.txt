@@ -15,3 +15,4 @@
 /home/ashish/Identity.Solution/src/Infrastructure/Identity.Infrastructure/obj/Debug/net9.0/refint/Identity.Infrastructure.dll
 /home/ashish/Identity.Solution/src/Infrastructure/Identity.Infrastructure/obj/Debug/net9.0/Identity.Infrastructure.pdb
 /home/ashish/Identity.Solution/src/Infrastructure/Identity.Infrastructure/obj/Debug/net9.0/ref/Identity.Infrastructure.dll
+/home/ashish/Identity.Solution/src/Infrastructure/Identity.Infrastructure/obj/Debug/net9.0/Identity.Infrastructure.sourcelink.json

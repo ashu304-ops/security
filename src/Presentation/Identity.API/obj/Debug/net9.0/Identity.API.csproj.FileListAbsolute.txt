@@ -158,3 +158,5 @@
 /home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/Identity.API.pdb
 /home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/Identity.API.genruntimeconfig.cache
 /home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/ref/Identity.API.dll
+/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/Identity.API.sourcelink.json
+/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz

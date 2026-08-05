@@ -10,3 +10,4 @@
 /home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/refint/Identity.Domain.dll
 /home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/Identity.Domain.pdb
 /home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/ref/Identity.Domain.dll
+/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/Debug/net9.0/Identity.Domain.sourcelink.json
