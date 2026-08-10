@@ -1,760 +1,326 @@
-# Computer Seekho Project
-
-# Security Microservice Integration Guide
-
-**Version:** 1.0
-**Applicable To:** All Backend & Frontend Developers
+Here is the complete, consolidated **`README.md`** file incorporating all sections, including the new **API Reference & Backend Integration Guide** for Java and other microservices.
 
 ---
 
-# Overview
+# Computer Seekho — Security IAM Service
 
-This project follows a **Microservice Architecture** where **Authentication and Authorization** are completely separated from the Business Application.
-
-Every developer is responsible only for their own business modules (Enquiries, Content, Follow-up, Gallery, etc.).
-
-Authentication is handled by the **Security Microservice**.
+The **Identity and Access Management (IAM) Service** is the centralized authentication and authorization provider for the Computer Seekho enterprise ecosystem. It handles user credentials, role-based access control (RBAC), fine-grained permissions, and Two-Factor Authentication (2FA/MFA) for administrative staff.
 
 ---
 
-# System Architecture
+## 1. Authentication & System Flow
 
-```text
-                        ┌────────────────────────────┐
-                        │     React Frontend         │
-                        │        Port : 5137         │
-                        └─────────────┬──────────────┘
-                                      │
-                                      │ Login Request
-                                      ▼
-                   ┌────────────────────────────────────┐
-                   │ Security Microservice (Docker)     │
-                   │ Port : 8137                        │
-                   │                                    │
-                   │ Staff Login API                    │
-                   │ POST /api/staff/login             │
-                   │                                    │
-                   │ SuperAdmin Login API              │
-                   │ POST /api/admin/login             │
-                   └───────────────┬────────────────────┘
-                                   │
-                          Returns JWT Token
-                                   │
-                                   ▼
-                     Token stored in Browser (LocalStorage)
-                                   │
-                                   │
-                                   ▼
-          Every Business API Request includes:
-          Authorization: Bearer <JWT Token>
+```
+                                  +-----------------------+
+                                  | User visits staff.html|
+                                  +-----------+-----------+
+                                              |
+                                   Enters Email & Password
+                                              |
+                                              v
+                                  +-----------------------+
+                                  |  POST /api/Auth/login |
+                                  +-----------+-----------+
+                                              |
+                          Is SuperAdmin?      |      Regular Staff?
+                   +--------------------------+--------------------------+
+                   |                                                     |
+                   v                                                     v
+     +--------------------------+                          +---------------------------+
+     | Requires 2FA             |                          | Issues JWT Access Token   |
+     | Redirects to admin.html  |                          | Redirects to React App    |
+     +------------+-------------+                          | (localhost:5173/dashboard)|
+                  |                                        +---------------------------+
+       Enters 6-Digit Code
+                  |
+                  v
+     +--------------------------+
+     | Issues JWT Access Token  |
+     | Opens Admin Portal UI    |
+     +--------------------------+
 
-                                   │
-                                   ▼
-             ┌──────────────────────────────────────────┐
-             │ Business Middleware (.NET API)           │
-             │ Port : 8097                              │
-             │                                          │
-             │ Modules                                 │
-             │ • Enquiries                             │
-             │ • Content Manager                       │
-             │ • Follow-ups                            │
-             │ • Gallery                               │
-             │ • Admissions                            │
-             │ • Any Future Modules                    │
-             └───────────────────┬──────────────────────┘
-                                 │
-                                 ▼
-                    Business MySQL Database (Port 7809)
 ```
 
 ---
 
-# Project Responsibility
+## 2. System Architecture & Conceptual Overview
 
-## Security Team
+### How Authentication Works
 
-Responsible for:
+1. **Credentials Verification**: Users submit credentials via `staff.html`.
+2. **2FA Gate**: SuperAdmin accounts require a 6-digit TOTP verification code from Google or Microsoft Authenticator before a token is granted.
+3. **JWT Token Issuance**: On successful verification, the IAM service returns a cryptographically signed **JSON Web Token (JWT)** containing user claims, roles, and permissions.
+4. **Role Routing**:
+* **SuperAdmins** are directed to the SuperAdmin Management Portal (`/admin.html`).
+* **Staff Members** (e.g., Counselors, Content Managers) are redirected to the React Operations App (`http://localhost:5173/admin/dashboard?token=...`).
 
-* User Authentication
-* User Authorization
-* JWT Token Generation
-* Role Management
-* Password Security
-* Staff Management
-* SuperAdmin Management
 
-Security Database is completely isolated.
 
-Business developers DO NOT modify Security Database.
+### Identity Database Schema
 
----
+The backend uses **ASP.NET Core Identity** backed by **MySQL 8.0**:
 
-## Business Team
+```
+┌───────────────┐        ┌──────────────────┐        ┌───────────────┐
+│     Users     │◄──────►│    UserRoles     │◄──────►│     Roles     │
+└───────────────┘        └──────────────────┘        └───────┬───────┘
+                                                             │
+                                                             ▼
+                                                    ┌──────────────────┐
+                                                    │ RolePermissions  │
+                                                    └───────┬──────────┘
+                                                            │
+                                                            ▼
+                                                    ┌──────────────────┐
+                                                    │   Permissions    │
+                                                    └──────────────────┘
 
-Responsible for:
-
-* Enquiries
-* Content Management
-* Follow Ups
-* Student Management
-* Reports
-* Admissions
-* Gallery
-* Future Features
-
-Business developers only need to validate the JWT Token.
-
-They never create or generate tokens.
-
----
-
-# Login Flow
-
-```text
-React App
-
-        │
-
-        │ POST /api/staff/login
-
-        ▼
-
-Security Service
-
-        │
-
-        │ Validate User
-
-        │
-
-        ▼
-
-Generate JWT Token
-
-        │
-
-        ▼
-
-Return Token
-
-        │
-
-        ▼
-
-React stores token
-
-        │
-
-        ▼
-
-All future API calls
-
-Authorization: Bearer <token>
 ```
 
 ---
 
-# API Endpoints
+## 3. Default System Roles & Seeded Accounts
 
-## Staff Login
+When the system boots up for the first time, EF Core automatically applies migrations and seeds default permissions, roles, and accounts:
 
-```
-POST http://localhost:8137/api/staff/login
-```
-
-For:
-
-* Counselor
-* Content Manager
-* Staff
-* Operations
-* Marketing
+| Persona | Role | Assigned Permissions | Default Email | Default Password |
+| --- | --- | --- | --- | --- |
+| **SuperAdmin** | `SuperAdmin` | Full System Access (`Staff.Manage`, `Course.CRUD`, `Enquiry.CRUD`, etc.) | `admin@computerseekho.com` | `Admin@1234` |
+| **Content Manager** | `ContentManager` | `Course.CRUD`, `Table.Maintenance`, `Excel.Upload` | *Created via Admin UI* | *Set at creation* |
+| **Counselor** | `Counselor` | `Enquiry.CRUD`, `FollowUp.View`, `Student.Register`, `Payment.Process` | *Created via Admin UI* | *Set at creation* |
 
 ---
 
-## SuperAdmin Login
+## 4. Local Development Quickstart
+
+### Prerequisites
+
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
+* [Git](https://git-scm.com/).
+
+### Running the Stack via Docker Compose
+
+Clone the repository and launch the containerized stack:
+
+```bash
+# Spin up MySQL and the IAM Backend
+docker compose up -d
+
+# Verify container statuses
+docker compose ps
 
 ```
-POST http://localhost:8137/api/admin/login
+
+### Accessing Local Portals
+
+* **Staff Login Portal**: [http://localhost:8137/staff.html](http://localhost:8137/staff.html)
+* **SuperAdmin IAM Dashboard**: [http://localhost:8137/admin.html](http://localhost:8137/admin.html)
+
+---
+
+## 5. API Reference & Backend Integration (Java / Other Microservices)
+
+### REST API Endpoints Reference
+
+| Method | Endpoint | Authorization | Description | Request Body / Query Params |
+| --- | --- | --- | --- | --- |
+| `POST` | `/api/Auth/login` | Anonymous | Authenticates staff and SuperAdmin credentials | `{"emailOrUsername": "...", "password": "..."}` |
+| `POST` | `/api/Auth/verify-mfa` | Anonymous | Validates 6-digit TOTP authenticator code | `{"emailOrUsername": "...", "code": "123456"}` |
+| `POST` | `/api/Auth/enable-mfa` | `[Authorize]` | Generates MFA secret key & QR Code URI | `{"emailOrUsername": "..."}` |
+| `POST` | `/api/Auth/register-staff` | `[Authorize(SuperAdmin)]` | Registers new staff members and assigns initial roles | `{"username": "...", "staffName": "...", "email": "...", "department": "...", "roles": ["..."], "password": "..."}` |
+| `GET` | `/api/Staff` | `[Authorize]` | Retrieves list of all registered staff members | *None* |
+| `POST` | `/api/Staff/{id}/assign-role` | `[Authorize(SuperAdmin)]` | Updates assigned roles for a specific user ID | `{"roles": ["ContentManager", "Counselor"]}` |
+| `DELETE` | `/api/Staff/{id}` | `[Authorize(SuperAdmin)]` | Deletes a staff account from database | *None* |
+| `GET` | `/api/Role` | `[Authorize]` | Fetches all system roles (`ContentManager`, `Counselor`, etc.) | *None* |
+| `POST` | `/api/Role` | `[Authorize(SuperAdmin)]` | Creates a new role with associated permission IDs | `{"roleName": "...", "description": "...", "permissionIds": [1, 2]}` |
+| `GET` | `/api/Permission` | `[Authorize]` | Retrieves all 8 system permissions | *None* |
+
+---
+
+### Key Technical Details for Java & Secondary Microservice Developers
+
+#### 1. Token Generation Mechanism
+
+The .NET IAM service handles all credential verification and password hashing (PBKDF2), issuing **HMAC-SHA256 signed JWT access tokens**.
+
+#### 2. Stateless Java `JwtAuthenticationFilter` Validation
+
+Secondary microservices (e.g., Java Spring Boot backend) **do not need to perform an HTTP request back to the IAM service** for token validation. Instead, validate the incoming JWT statelessly in memory using the shared cryptographic key and issuer properties:
+
+* **Algorithm**: `HMAC-SHA256` (`HS256`)
+* **Secret Key**: `SuperSecretKeyAtLeast256BitsLongForHmacSha256Security!`
+* **Issuer (`iss`)**: `Identity.API`
+* **Audience (`aud`)**: `ComputerSeekho.Client`
+* **Claims Structure**:
+* `sub` or `NameIdentifier`: User GUID (`Id`)
+* `email`: User Email
+* `[http://schemas.microsoft.com/ws/2008/06/identity/claims/role](http://schemas.microsoft.com/ws/2008/06/identity/claims/role)` or `role`: Assigned Role string (e.g., `ContentManager`, `Counselor`)
+* `Permission`: Array of granted permission strings (e.g., `["Course.CRUD", "Table.Maintenance"]`)
+
+
+
+##### Example Java Spring Security Configuration (`application.yml`):
+
+```yaml
+jwt:
+  secret: "SuperSecretKeyAtLeast256BitsLongForHmacSha256Security!"
+  issuer: "Identity.API"
+  audience: "ComputerSeekho.Client"
+
 ```
 
-Only SuperAdmin can login here.
+#### 3. Database Coexistence & Isolation
+
+* **Database Name**: `ComputerSeekhoDb`
+* **Isolation Strategy**: The IAM service seeds and manages its dedicated identity tables (`Users`, `Roles`, `Permissions`, `UserRoles`, `RolePermissions`, `AuditLogs`, `RefreshTokens`) inside `ComputerSeekhoDb`.
+* Other microservices (e.g., Java APIs) connect to `ComputerSeekhoDb` to manage domain entities (`Courses`, `Enquiries`, `Batches`, `Payments`) without interfering with authentication tables.
+
+#### 4. Docker Service Resolution & Ports
+
+When resolving services inside the shared Docker network (`cs-network`):
+
+* **IAM Backend Endpoint**:
+* **Internal Container Network**: `http://cs-iam-backend:8137`
+* **Host Machine Access**: `http://localhost:8137`
+
+
+* **MySQL Database Endpoint**:
+* **Internal Container Network**: `cs-iam-mysql:3006`
+* **Host Machine Access**: `localhost:3310`
+
+
+
+##### Java Container Database Configuration (`application.properties`):
+
+```properties
+spring.datasource.url=jdbc:mysql://cs-iam-mysql:3006/ComputerSeekhoDb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=Ashu@1234
+
+```
 
 ---
 
-# Test Accounts
+## 6. Frontend Integration Guide (React - `localhost:5173`)
 
-| Role            | Email                                                               | Password      |
-| --------------- | ------------------------------------------------------------------- | ------------- |
-| SuperAdmin      | [admin@computerseekho.com](mailto:admin@computerseekho.com)         | Admin@1234    |
-| Counselor       | [counselor@computerseekho.com](mailto:counselor@computerseekho.com) | Password@1234 |
-| Content Manager | [content@computerseekho.com](mailto:content@computerseekho.com)     | Password@1234 |
-| Staff           | [staff@computerseekho.com](mailto:staff@computerseekho.com)         | Password@1234 |
+### Step 1: Handling Token Intake Query String
 
----
+When a staff member logs in, they are redirected to the React frontend with their token attached to the URL query parameter (`?token=...`). Add this hook to your React application (`App.jsx` or Auth Context):
 
-# Business Middleware Integration
+```jsx
+import { useEffect, useState } from 'react';
 
-Every backend developer must complete the following steps.
+export function useAuth() {
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [user, setUser] = useState(null);
 
----
+  useEffect(() => {
+    // Extract token from URL query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('token');
 
-## Step 1
+    let activeToken = token;
 
-### Configure appsettings.json
+    if (tokenFromUrl) {
+      activeToken = tokenFromUrl;
+      localStorage.setItem('token', tokenFromUrl);
+      setToken(tokenFromUrl);
+      
+      // Clean query parameter from address bar
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
 
-```json
-{
-  "Jwt": {
-    "SecretKey": "SuperSecretKeyAtLeast256BitsLongForHmacSha256Security!",
-    "Issuer": "Identity.API",
-    "Audience": "ComputerSeekho.Client"
-  }
+    // Decode claims from JWT payload
+    if (activeToken) {
+      try {
+        const payloadBase64 = activeToken.split('.')[1];
+        const decodedPayload = JSON.parse(atob(payloadBase64));
+        setUser(decodedPayload);
+      } catch (err) {
+        console.error('Invalid token format:', err);
+      }
+    }
+  }, []);
+
+  return { token, user };
 }
+
 ```
 
-These values **must exactly match** the Security Microservice.
+### Step 2: Attaching Authorization Headers
 
-Changing these values will invalidate authentication.
-
----
-
-## Step 2
-
-### Configure JWT Authentication
-
-Program.cs
-
-```csharp
-builder.Services
-.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-
-        ValidIssuer = "Identity.API",
-        ValidAudience = "ComputerSeekho.Client",
-
-        IssuerSigningKey =
-            new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])
-            )
-    };
-});
-```
-
----
-
-## Step 3
-
-### Configure CORS
-
-```csharp
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp", builder =>
-    {
-        builder
-            .WithOrigins("http://localhost:5137")
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
-    });
-});
-```
-
----
-
-## Step 4
-
-### Middleware Pipeline
-
-The middleware order is important.
-
-```csharp
-app.UseCors("AllowReactApp");
-
-app.UseAuthentication();
-
-app.UseAuthorization();
-
-app.MapControllers();
-```
-
----
-
-# Protect Controllers
-
-Every secured controller should include:
-
-```csharp
-[Authorize]
-```
-
-Example
-
-```csharp
-[ApiController]
-[Route("api/[controller]")]
-[Authorize]
-public class EnquiryController : ControllerBase
-{
-
-}
-```
-
----
-
-# Restrict by Roles
-
-If only specific staff should access a controller:
-
-```csharp
-[Authorize(Roles = "Counselor")]
-```
-
-Multiple roles:
-
-```csharp
-[Authorize(Roles="Counselor,ContentManager,SuperAdmin")]
-```
-
-Only SuperAdmin
-
-```csharp
-[Authorize(Roles="SuperAdmin")]
-```
-
----
-
-# React Integration
-
-Two API clients are required.
-
-## Security API
+Attach the stored token to all outgoing API requests from the React client:
 
 ```javascript
-http://localhost:8137/api
-```
-
-Used only for:
-
-* Login
-* Logout
-* Password
-* Staff Profile
-
----
-
-## Business API
-
-```javascript
-http://localhost:8097/api
-```
-
-Used for:
-
-* Enquiries
-* Students
-* Content
-* Gallery
-* Reports
-* Admissions
-
----
-
-# Axios Configuration
-
-```javascript
-securityApi
-
-↓
-
-Login
-
-↓
-
-Receive Token
-
-↓
-
-Save Token
-
-↓
-
-businessApi
-
-↓
-
-Automatically send
-
-Authorization: Bearer <JWT>
-```
-
----
-
-# Business Developer Workflow
-
-```
-Create Controller
-
-↓
-
-Add [Authorize]
-
-↓
-
-Write Business Logic
-
-↓
-
-Use Business Database
-
-↓
-
-Done
-```
-
-Business developers should never:
-
-* Create JWT Tokens
-* Validate Passwords
-* Manage Users
-* Modify Security Database
-
-Those responsibilities belong to the Security Microservice.
-
----
-
-# Example Request Flow
-
-## User Login
-
-```
-React
-
-↓
-
-POST /staff/login
-
-↓
-
-Security API
-
-↓
-
-Validate Credentials
-
-↓
-
-Generate JWT
-
-↓
-
-Return Token
-```
-
----
-
-## Create Enquiry
-
-```
-React
-
-↓
-
-POST /api/enquiry
-
-Authorization: Bearer JWT
-
-↓
-
-Business Middleware
-
-↓
-
-Validate JWT
-
-↓
-
-Execute Business Logic
-
-↓
-
-Save into MySQL
-
-↓
-
-Return Success
-```
-
----
-
-# Responsibilities Summary
-
-| Component                  | Responsibility                                  |
-| -------------------------- | ----------------------------------------------- |
-| React (5137)               | User Interface, Login, Send JWT                 |
-| Security Service (8137)    | Authentication, Authorization, JWT Generation   |
-| Business Middleware (8097) | Business Logic, Validate JWT, Role-Based Access |
-| Business Database (7809)   | Business Data                                   |
-| Security Database          | Users, Roles, Permissions                       |
-
----
-
-# Important Rules
-
-✅ Always login through the Security Microservice.
-
-✅ Never create users inside Business Middleware.
-
-✅ Never generate JWT Tokens inside Business Middleware.
-
-✅ Always protect controllers using `[Authorize]`.
-
-✅ Use role-based authorization where required.
-
-✅ Keep business data and security data in separate databases.
-
----
-
-# Future Modules
-
-Any future module (Attendance, Fees, Notifications, CRM, LMS, etc.) should follow the same integration pattern:
-
-```
-React
-
-↓
-
-Security Service
-
-↓
-
-JWT Token
-
-↓
-
-Business Module
-
-↓
-
-Business Database
-```
-
-This architecture ensures that all modules share a centralized authentication system while allowing each team to develop and maintain business features independently.
-
-
-
-
-
-this is much sufficient
-
-
-
-
-
----------------------------normal installation ----------------------------------------------------------------------
-without docker 
-
-
-
-Here is the step-by-step guide to push your code to GitHub, followed by a complete `README.md` formatted specifically for running your solution on both **Arch Linux** and **Windows**.
-
----
-
-## Part 1: Push Project to GitHub
-
-Run these commands in your project root directory (`/home/ashish/Identity.Solution`):
-
-```bash
-# 1. Initialize Git repository
-git init
-
-# 2. Add all files to staging
-git add .
-
-# 3. Create initial commit
-git commit -m "feat: complete identity API with portal separation and MySQL integration"
-
-# 4. Set default branch to main
-git branch -M main
-
-# 5. Add remote GitHub repository
-git remote add origin https://github.com/ashu304-ops/security.git
-
-# 6. Push code to GitHub
-git push -u origin main
-
-```
-
-*(If prompted for credentials, enter your GitHub Username and Personal Access Token or SSH Key).*
-
----
-
-## Part 2: `README.md` File
-
-Create a file named `README.md` in your project root directory and paste the following content:
-
-```markdown
-# Computer Seekho - Identity & Access Management (IAM) Solution
-
-A modular, clean-architecture ASP.NET Core 9 Web API providing Identity & Access Management (IAM) with Role-Based Access Control (RBAC), JWT authentication, and isolated front-end admin/staff management portals.
-
----
-
-## 🛠 Tech Stack
-
-- **Backend:** .NET 9 Web API (Clean Architecture: API, Application, Domain, Infrastructure, Persistence, Contracts)
-- **Database:** MySQL
-- **Authentication:** ASP.NET Core Identity + JWT Tokens
-- **Frontend:** Vanilla JS / HTML5 / CSS3 (Hosted in `wwwroot`)
-
----
-
-## 🚀 Getting Started
-
-Follow the instructions below depending on your operating system.
-
-### Prerequisites (All Platforms)
-1. **.NET 9 SDK** installed.
-2. **MySQL Server** running locally or in Docker.
-
----
-
-## 🐧 Option A: Setup on Arch Linux
-
-### 1. Install Dependencies
-```bash
-sudo pacman -S dotnet-sdk mysql
-
-```
-
-### 2. Start MySQL Service
-
-```bash
-sudo systemctl enable --now mysqld
-
-```
-
-### 3. Setup Database and User
-
-Log into MySQL and execute:
-
-```sql
-CREATE DATABASE IF NOT EXISTS ComputerSeekhoIdentityDb;
-CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY 'root';
-GRANT ALL PRIVILEGES ON ComputerSeekhoIdentityDb.* TO 'root'@'localhost';
-FLUSH PRIVILEGES;
-
-```
-
-### 4. Configure Connection String
-
-Verify `src/Presentation/Identity.API/appsettings.json`:
-
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=ComputerSeekhoIdentityDb;User=root;Password=root;"
+async function fetchCourseData() {
+  const token = localStorage.getItem('token');
+
+  const response = await fetch('http://localhost:8137/api/Course', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  return await response.json();
 }
 
 ```
 
-### 5. Restore, Build, and Run
-
-```bash
-cd Identity.Solution
-
-# Restore NuGet dependencies
-dotnet restore
-
-# Build the solution
-dotnet build
-
-# Apply EF Core Migrations
-dotnet ef database update --project src/Infrastructure/Identity.Persistence --startup-project src/Presentation/Identity.API
-
-# Run Web API project
-dotnet run --project src/Presentation/Identity.API
-
-```
-
 ---
 
-## 🪟 Option B: Setup on Windows
+## 7. Deployment Orchestration (`docker-compose.yml`)
 
-### 1. Install Prerequisites
+The Docker Compose configuration uses a 30-second start period health check buffer to ensure MySQL completes database initialization before the backend connects:
 
-* Download and install [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0).
-* Download and install [MySQL Community Server](https://dev.mysql.com/downloads/installer/).
+```yaml
+networks:
+  cs-network:
+    driver: bridge
 
-### 2. Setup Database in MySQL Workbench / Command Line
+volumes:
+  cs-mysql-data:
+    driver: local
 
-```sql
-CREATE DATABASE IF NOT EXISTS ComputerSeekhoIdentityDb;
+services:
+  cs-iam-mysql:
+    image: mysql:8.0
+    container_name: cs-iam-mysql
+    restart: always
+    networks:
+      - cs-network
+    ports:
+      - "3310:3006"
+    environment:
+      MYSQL_ROOT_PASSWORD: "Ashu@1234"
+      MYSQL_DATABASE: "ComputerSeekhoDb"
+    command: --port=3006 --default-authentication-plugin=mysql_native_password
+    volumes:
+      - cs-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-P", "3006", "-u", "root", "-pAshu@1234"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
-```
-
-### 3. Configure Connection String
-
-Update `src\Presentation\Identity.API\appsettings.json` with your MySQL credentials:
-
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=ComputerSeekhoIdentityDb;User=root;Password=your_mysql_password;"
-}
-
-```
-
-### 4. Restore, Build, and Run (PowerShell or CMD)
-
-```powershell
-# Navigate to solution directory
-cd Identity.Solution
-
-# Restore packages
-dotnet restore
-
-# Build solution
-dotnet build
-
-# Apply database migrations
-dotnet ef database update --project src\Infrastructure\Identity.Persistence --startup-project src\Presentation\Identity.API
-
-# Run application
-dotnet run --project src\Presentation\Identity.API
-
-```
-
----
-
-## 🌐 Accessing Portals
-
-Once the API starts (`http://localhost:5097` or `https://localhost:7097`):
-
-| Portal | URL | Authorized Roles | Description |
-| --- | --- | --- | --- |
-| **SuperAdmin Portal** | `http://localhost:5097/admin.html` | `SuperAdmin` | IAM controls, role creation, staff registration |
-| **Staff Workspace** | `http://localhost:5097/staff.html` | Staff (Counselor, Manager, etc.) | Operational dashboard for enquiries & registrations |
-
----
-
-## 🧪 Running Unit Tests
-
-Run test suites on any OS:
-
-```bash
-dotnet test
-
-```
-
-```
-
-<FollowUp label="Would you like to generate a .gitignore file tailored for .NET and Linux/Windows to avoid committing build outputs?" query="Create a standard .gitignore file for .NET projects."/>
+  cs-iam-backend:
+    image: ashu304/cs-iam-backend:latest
+    container_name: cs-iam-backend
+    restart: always
+    networks:
+      - cs-network
+    ports:
+      - "8137:8137"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=cs-iam-mysql;Port=3006;Database=ComputerSeekhoDb;User=root;Password=Ashu@1234;TreatTinyAsBoolean=true;
+      - Jwt__SecretKey=SuperSecretKeyAtLeast256BitsLongForHmacSha256Security!
+      - Jwt__Issuer=Identity.API
+      - Jwt__Audience=ComputerSeekho.Client
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      cs-iam-mysql:
+        condition: service_healthy
 
 ```
