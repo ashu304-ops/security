@@ -1,4 +1,3 @@
-Here is the complete, consolidated **`README.md`** file incorporating all sections, including the new **API Reference & Backend Integration Guide** for Java and other microservices.
 
 ---
 
