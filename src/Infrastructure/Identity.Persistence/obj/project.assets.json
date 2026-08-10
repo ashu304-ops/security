@@ -3043,11 +3043,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ashish/Identity.Solution/src/Infrastructure/Identity.Persistence/Identity.Persistence.csproj",
+      "projectUniqueName": "/home/ashish/security/security/src/Infrastructure/Identity.Persistence/Identity.Persistence.csproj",
       "projectName": "Identity.Persistence",
-      "projectPath": "/home/ashish/Identity.Solution/src/Infrastructure/Identity.Persistence/Identity.Persistence.csproj",
+      "projectPath": "/home/ashish/security/security/src/Infrastructure/Identity.Persistence/Identity.Persistence.csproj",
       "packagesPath": "/home/ashish/.nuget/packages/",
-      "outputPath": "/home/ashish/Identity.Solution/src/Infrastructure/Identity.Persistence/obj/",
+      "outputPath": "/home/ashish/security/security/src/Infrastructure/Identity.Persistence/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/ashish/.nuget/NuGet/NuGet.Config"
@@ -3062,11 +3062,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/home/ashish/Identity.Solution/src/Core/Identity.Application/Identity.Application.csproj": {
-              "projectPath": "/home/ashish/Identity.Solution/src/Core/Identity.Application/Identity.Application.csproj"
+            "/home/ashish/security/security/src/Core/Identity.Application/Identity.Application.csproj": {
+              "projectPath": "/home/ashish/security/security/src/Core/Identity.Application/Identity.Application.csproj"
             },
-            "/home/ashish/Identity.Solution/src/Core/Identity.Domain/Identity.Domain.csproj": {
-              "projectPath": "/home/ashish/Identity.Solution/src/Core/Identity.Domain/Identity.Domain.csproj"
+            "/home/ashish/security/security/src/Core/Identity.Domain/Identity.Domain.csproj": {
+              "projectPath": "/home/ashish/security/security/src/Core/Identity.Domain/Identity.Domain.csproj"
             }
           }
         }

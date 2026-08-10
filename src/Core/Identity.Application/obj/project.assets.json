@@ -568,11 +568,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ashish/Identity.Solution/src/Core/Identity.Application/Identity.Application.csproj",
+      "projectUniqueName": "/home/ashish/security/security/src/Core/Identity.Application/Identity.Application.csproj",
       "projectName": "Identity.Application",
-      "projectPath": "/home/ashish/Identity.Solution/src/Core/Identity.Application/Identity.Application.csproj",
+      "projectPath": "/home/ashish/security/security/src/Core/Identity.Application/Identity.Application.csproj",
       "packagesPath": "/home/ashish/.nuget/packages/",
-      "outputPath": "/home/ashish/Identity.Solution/src/Core/Identity.Application/obj/",
+      "outputPath": "/home/ashish/security/security/src/Core/Identity.Application/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/ashish/.nuget/NuGet/NuGet.Config"
@@ -587,8 +587,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/home/ashish/Identity.Solution/src/Core/Identity.Domain/Identity.Domain.csproj": {
-              "projectPath": "/home/ashish/Identity.Solution/src/Core/Identity.Domain/Identity.Domain.csproj"
+            "/home/ashish/security/security/src/Core/Identity.Domain/Identity.Domain.csproj": {
+              "projectPath": "/home/ashish/security/security/src/Core/Identity.Domain/Identity.Domain.csproj"
             }
           }
         }

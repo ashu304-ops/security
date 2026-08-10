@@ -22,7 +22,7 @@
 
     .auth-container {
       margin: auto; background: var(--bg-white); padding: 2.5rem; border-radius: 12px;
-      width: 100%; max-width: 420px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 1px solid var(--border-color);
+      width: 100%; max-width: 440px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 1px solid var(--border-color);
     }
     .auth-header { text-align: center; margin-bottom: 2rem; }
     .auth-header h1 { color: var(--accent-green); font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: 700; }
@@ -43,9 +43,10 @@
     .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem; }
     .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; outline: none; }
     .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
-    .btn-primary { background: var(--accent-green); color: white; }
+    .btn-primary { background: var(--accent-green); color: white; width: 100%; }
+    .btn-primary:hover { background: var(--accent-green-hover); }
     .btn-danger { background: var(--accent-danger); color: white; }
-    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; width: auto; }
     
     table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
     th, td { text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); }
@@ -68,15 +69,22 @@
         <p><strong>SuperAdmin</strong> Identity & Access Portal</p>
       </div>
       <form id="login-form">
-        <div class="form-group">
-          <label>Admin Email</label>
-          <input type="email" id="login-email" class="form-control" value="admin@computerseekho.com" required />
+        <div class="form-group" id="user-group">
+          <label>Admin Username or Email</label>
+          <input type="text" id="login-email" class="form-control" value="admin@computerseekho.com" required />
         </div>
-        <div class="form-group">
+        <div class="form-group" id="pass-group">
           <label>Password</label>
           <input type="password" id="login-password" class="form-control" value="Admin@1234" required />
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;">Sign In as SuperAdmin</button>
+
+        <!-- 2FA Authenticator Code Input (Revealed when MFA is required) -->
+        <div class="form-group" id="mfa-group" style="display:none;">
+          <label style="color: var(--accent-green);">Authenticator 6-Digit Code</label>
+          <input type="text" id="mfa-code" class="form-control" placeholder="123456" maxlength="6" autocomplete="off" />
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn btn-primary">Sign In as SuperAdmin</button>
       </form>
     </div>
   </div>
@@ -89,6 +97,7 @@
         <li class="nav-item active" onclick="switchTab('staff', event)">Staff Directory</li>
         <li class="nav-item" onclick="switchTab('register', event)">Register Staff</li>
         <li class="nav-item" onclick="switchTab('roles', event)">Roles & Permissions</li>
+        <li class="nav-item" onclick="switchTab('mfa', event)">Security & 2FA</li>
       </ul>
       <div class="user-profile">
         <div>
@@ -117,11 +126,12 @@
         <h2>Register New Staff Member</h2>
         <div class="card" style="max-width: 500px;">
           <form id="register-staff-form">
-            <div class="form-group"><label>Name</label><input type="text" id="reg-name" class="form-control" required /></div>
-            <div class="form-group"><label>Email</label><input type="email" id="reg-email" class="form-control" required /></div>
-            <div class="form-group"><label>Department</label><input type="text" id="reg-dept" class="form-control" required /></div>
+            <div class="form-group"><label>Username</label><input type="text" id="reg-username" class="form-control" placeholder="e.g. tomwarrier" required /></div>
+            <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" class="form-control" placeholder="e.g. Tom Warrier" required /></div>
+            <div class="form-group"><label>Email</label><input type="email" id="reg-email" class="form-control" placeholder="e.g. tom@computerseekho.com" required /></div>
+            <div class="form-group"><label>Department</label><input type="text" id="reg-dept" class="form-control" placeholder="e.g. Counseling" required /></div>
             <div class="form-group"><label>Role</label><select id="reg-role" class="form-control" required></select></div>
-            <div class="form-group"><label>Password</label><input type="password" id="reg-password" class="form-control" required /></div>
+            <div class="form-group"><label>Password</label><input type="password" id="reg-password" class="form-control" placeholder="••••••••" required /></div>
             <button type="submit" class="btn btn-primary">Create Staff Account</button>
           </form>
         </div>
@@ -148,13 +158,43 @@
           </div>
         </div>
       </div>
+
+      <!-- NEW TAB: 2FA SECURITY MANAGEMENT -->
+      <div id="tab-mfa" class="tab-content" style="display:none;">
+        <h2>Two-Factor Authentication Setup</h2>
+        <div class="card" style="max-width: 500px;">
+          <h3>Configure Authenticator App</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0.5rem 0 1.25rem 0;">
+            Secure your SuperAdmin account using Google Authenticator, Microsoft Authenticator, or Authy.
+          </p>
+          
+          <button id="btn-setup-mfa" class="btn btn-primary" onclick="setupMfaUI()">Generate 2FA QR Code</button>
+
+          <div id="mfa-setup-box" style="display:none; margin-top: 1.5rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+            <p style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.75rem;">Scan this QR code with your phone:</p>
+            
+            <img id="mfa-qr-image" src="" alt="MFA QR Code" style="width: 200px; height: 200px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 1rem;" />
+            
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Secret Key: <strong id="mfa-secret-text" style="color: var(--accent-green); user-select: all;"></strong>
+            </p>
+
+            <div class="form-group" style="text-align: left;">
+              <label>Enter 6-Digit Code to Activate</label>
+              <input type="text" id="mfa-activate-code" class="form-control" placeholder="123456" maxlength="6" autocomplete="off" />
+            </div>
+
+            <button class="btn btn-primary" onclick="activateMfaUI()">Verify & Activate 2FA</button>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
   <script>
-    // Updated to point to Security Microservice on Docker Port 8137
     const API_BASE = 'http://localhost:8137/api';
     let token = localStorage.getItem('admin_token');
+    let isMfaStep = false;
 
     function showNotification(msg, isError = false) {
       const toast = document.getElementById('toast');
@@ -174,59 +214,105 @@
       try {
         const response = await fetch(`${API_BASE}${endpoint}`, config);
         const data = await response.json();
-        if (!response.ok) return { success: false, message: data.message || 'Request failed' };
+
+        if (!response.ok) {
+          const errorMsg = data?.message || data?.title || (data?.errors ? Object.values(data.errors).flat().join(', ') : `Error ${response.status}`);
+          return { success: false, message: errorMsg };
+        }
         return data;
       } catch (err) {
-        showNotification('Network connection error', true);
-        return null;
+        return { success: false, message: 'Network or connection error.' };
       }
     }
 
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('login-email').value;
+      const emailOrUsername = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
 
-      const res = await apiFetch('/Auth/login', 'POST', { email, password });
-      if (res && res.success) {
-        const roles = res.data.roles || [];
-        
-        // STRICT ROLE CHECK: Only SuperAdmin allowed in this portal
-        if (!roles.includes('SuperAdmin')) {
-          showNotification('Access Denied! You must be a SuperAdmin to enter this portal.', true);
+      // STEP 2: Verify MFA Code Phase
+      if (isMfaStep) {
+        const code = document.getElementById('mfa-code').value;
+        if (!code || code.length !== 6) {
+          showNotification('Enter a valid 6-digit MFA code.', true);
           return;
         }
 
-        token = res.data.token;
-        localStorage.setItem('admin_token', token);
-        localStorage.setItem('admin_userInfo', JSON.stringify(res.data));
-        showNotification('SuperAdmin Authenticated!');
-        initDashboard();
+        const res = await apiFetch('/Auth/verify-mfa', 'POST', { emailOrUsername, code });
+        if (res && res.success) {
+          handleAuthSuccess(res.data);
+        } else {
+          showNotification(res?.message || 'MFA Verification Failed', true);
+        }
+        return;
+      }
+
+      // STEP 1: Standard Password Phase
+      const res = await apiFetch('/Auth/login', 'POST', { email: emailOrUsername, password });
+      if (res && res.success) {
+        const roles = res.data.roles || [];
+
+        if (res.data.requiresMfa) {
+          isMfaStep = true;
+          document.getElementById('mfa-group').style.display = 'block';
+          document.getElementById('pass-group').style.display = 'none';
+          document.getElementById('login-email').readOnly = true;
+          document.getElementById('btn-submit').innerText = 'Verify Authenticator Code';
+          showNotification('MFA Required. Check your Authenticator app.');
+        } else {
+          if (!roles.includes('SuperAdmin')) {
+            showNotification('Access Denied! Only SuperAdmins can access this portal.', true);
+            return;
+          }
+          handleAuthSuccess(res.data);
+        }
       } else {
         showNotification(res?.message || 'Login failed', true);
       }
     });
 
+    function handleAuthSuccess(authData) {
+      token = authData.token;
+      localStorage.setItem('admin_token', token);
+      localStorage.setItem('cs_admin_token', token);
+      localStorage.setItem('token', token);
+      localStorage.setItem('admin_userInfo', JSON.stringify(authData));
+      showNotification('SuperAdmin Authenticated!');
+      initDashboard();
+    }
+
     function logout() {
       localStorage.removeItem('admin_token');
+      localStorage.removeItem('cs_admin_token');
+      localStorage.removeItem('token');
       localStorage.removeItem('admin_userInfo');
       token = null;
+      isMfaStep = false;
+      document.getElementById('mfa-group').style.display = 'none';
+      document.getElementById('pass-group').style.display = 'block';
+      document.getElementById('login-email').readOnly = false;
+      document.getElementById('btn-submit').innerText = 'Sign In as SuperAdmin';
       document.getElementById('dashboard-view').style.display = 'none';
       document.getElementById('auth-view').style.display = 'flex';
     }
 
     function initDashboard() {
-      const userInfo = JSON.parse(localStorage.getItem('admin_userInfo'));
-      if (!userInfo) return logout();
+      const userInfoStr = localStorage.getItem('admin_userInfo');
+      if (!token || !userInfoStr) return logout();
 
-      document.getElementById('auth-view').style.display = 'none';
-      document.getElementById('dashboard-view').style.display = 'flex';
-      document.getElementById('user-display-name').innerText = userInfo.staffName;
-      document.getElementById('user-display-role').innerText = userInfo.roles.join(', ');
+      try {
+        const userInfo = JSON.parse(userInfoStr);
+        document.getElementById('auth-view').style.display = 'none';
+        document.getElementById('dashboard-view').style.display = 'flex';
+        document.getElementById('user-display-name').innerText = userInfo.staffName || 'SuperAdmin';
+        document.getElementById('user-display-role').innerText = Array.isArray(userInfo.roles) ? userInfo.roles.join(', ') : 'SuperAdmin';
 
-      loadStaff();
-      loadRoles();
-      loadPermissions();
+        loadStaff();
+        loadRoles();
+        loadPermissions();
+      } catch (e) {
+        logout();
+      }
     }
 
     function switchTab(tabName, evt) {
@@ -261,20 +347,21 @@
     document.getElementById('register-staff-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const body = {
-        staffName: document.getElementById('reg-name').value,
-        email: document.getElementById('reg-email').value,
-        department: document.getElementById('reg-dept').value,
+        username: document.getElementById('reg-username').value.trim(),
+        staffName: document.getElementById('reg-name').value.trim(),
+        email: document.getElementById('reg-email').value.trim(),
+        department: document.getElementById('reg-dept').value.trim(),
         role: document.getElementById('reg-role').value,
         password: document.getElementById('reg-password').value
       };
 
       const res = await apiFetch('/Auth/register-staff', 'POST', body);
       if (res && res.success) {
-        showNotification('Staff Created!');
+        showNotification('Staff Account Created Successfully!');
         e.target.reset();
         loadStaff();
         switchTab('staff');
-      } else { showNotification(res?.message || 'Failed', true); }
+      } else { showNotification(res?.message || 'Failed to create staff account', true); }
     });
 
     async function loadRoles() {
@@ -315,7 +402,49 @@
       } else { showNotification(res?.message || 'Failed', true); }
     });
 
-    if (token) initDashboard();
+    // -------------------------------------------------------------------------
+    // NEW 2FA FUNCTIONS
+    // -------------------------------------------------------------------------
+    async function setupMfaUI() {
+      const res = await apiFetch('/Auth/enable-mfa', 'POST');
+      if (res && res.success) {
+        document.getElementById('mfa-qr-image').src = res.data.qrCodeUri;
+        document.getElementById('mfa-secret-text').innerText = res.data.secretKey;
+        document.getElementById('mfa-setup-box').style.display = 'block';
+        document.getElementById('btn-setup-mfa').style.display = 'none';
+        showNotification('2FA Key Generated. Scan QR Code in Authenticator App.');
+      } else {
+        showNotification(res?.message || 'Failed to generate 2FA key', true);
+      }
+    }
+
+    async function activateMfaUI() {
+      const code = document.getElementById('mfa-activate-code').value.trim();
+      const userInfo = JSON.parse(localStorage.getItem('admin_userInfo') || '{}');
+      const emailOrUsername = userInfo.email || 'admin@computerseekho.com';
+
+      if (!code || code.length !== 6) {
+        showNotification('Please enter a valid 6-digit code.', true);
+        return;
+      }
+
+      const res = await apiFetch('/Auth/verify-mfa', 'POST', { emailOrUsername, code });
+      if (res && res.success) {
+        showNotification('Two-Factor Authentication is NOW ACTIVATED!');
+        document.getElementById('mfa-setup-box').style.display = 'none';
+        document.getElementById('btn-setup-mfa').style.display = 'inline-block';
+        document.getElementById('btn-setup-mfa').innerText = '2FA Status: Active';
+        document.getElementById('btn-setup-mfa').disabled = true;
+      } else {
+        showNotification(res?.message || 'Verification failed. Try again.', true);
+      }
+    }
+
+    if (token && localStorage.getItem('admin_userInfo')) {
+      initDashboard();
+    } else {
+      logout();
+    }
   </script>
 </body>
 </html>

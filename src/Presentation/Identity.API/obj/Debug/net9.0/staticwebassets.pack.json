@@ -1,15 +1,15 @@
 {
   "Files": [
     {
-      "Id": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
+      "Id": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/admin.html",
       "PackagePath": "staticwebassets/admin.html"
     },
     {
-      "Id": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/cors-test.html",
+      "Id": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/cors-test.html",
       "PackagePath": "staticwebassets/cors-test.html"
     },
     {
-      "Id": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "Id": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/staff.html",
       "PackagePath": "staticwebassets/staff.html"
     },
     {

@@ -605,11 +605,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ashish/Identity.Solution/src/Presentation/Identity.AdminPortal/Identity.AdminPortal.csproj",
+      "projectUniqueName": "/home/ashish/security/security/src/Presentation/Identity.AdminPortal/Identity.AdminPortal.csproj",
       "projectName": "Identity.AdminPortal",
-      "projectPath": "/home/ashish/Identity.Solution/src/Presentation/Identity.AdminPortal/Identity.AdminPortal.csproj",
+      "projectPath": "/home/ashish/security/security/src/Presentation/Identity.AdminPortal/Identity.AdminPortal.csproj",
       "packagesPath": "/home/ashish/.nuget/packages/",
-      "outputPath": "/home/ashish/Identity.Solution/src/Presentation/Identity.AdminPortal/obj/",
+      "outputPath": "/home/ashish/security/security/src/Presentation/Identity.AdminPortal/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/ashish/.nuget/NuGet/NuGet.Config"
@@ -624,11 +624,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/home/ashish/Identity.Solution/src/Core/Identity.Application/Identity.Application.csproj": {
-              "projectPath": "/home/ashish/Identity.Solution/src/Core/Identity.Application/Identity.Application.csproj"
+            "/home/ashish/security/security/src/Core/Identity.Application/Identity.Application.csproj": {
+              "projectPath": "/home/ashish/security/security/src/Core/Identity.Application/Identity.Application.csproj"
             },
-            "/home/ashish/Identity.Solution/src/Presentation/Identity.Contracts/Identity.Contracts.csproj": {
-              "projectPath": "/home/ashish/Identity.Solution/src/Presentation/Identity.Contracts/Identity.Contracts.csproj"
+            "/home/ashish/security/security/src/Presentation/Identity.Contracts/Identity.Contracts.csproj": {
+              "projectPath": "/home/ashish/security/security/src/Presentation/Identity.Contracts/Identity.Contracts.csproj"
             }
           }
         }

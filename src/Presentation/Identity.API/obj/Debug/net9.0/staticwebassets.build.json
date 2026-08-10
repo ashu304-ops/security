@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "+ZotmF7K6lp1gNBypvmux5fOxLRjs07usNmWZvI8lsU=",
+  "Hash": "vcu56llbjXbdv+6LFA9zR+OCRAVvkeRf4buWBmKhaY0=",
   "Source": "Identity.API",
   "BasePath": "_content/Identity.API",
   "Mode": "Default",
@@ -10,38 +10,38 @@
     {
       "Name": "Identity.API/wwwroot",
       "Source": "Identity.API",
-      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/",
+      "ContentRoot": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/",
       "BasePath": "_content/Identity.API",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
+      "Identity": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-x0dpdsb4my.gz",
       "SourceId": "Identity.API",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/",
+      "ContentRoot": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/Identity.API",
-      "RelativePath": "admin#[.{fingerprint=elaubcpvom}]?.html.gz",
+      "RelativePath": "admin#[.{fingerprint=x0dpdsb4my}]?.html.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
+      "RelatedAsset": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/admin.html",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "86qvjdwuzz",
-      "Integrity": "wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=",
+      "Fingerprint": "g4ka32a5l1",
+      "Integrity": "oHDfYQ0AGtb0OjDvNodHPyU0OXv4eSZJC5sDH+huHOA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html"
+      "OriginalItemSpec": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/admin.html"
     },
     {
-      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
+      "Identity": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
       "SourceId": "Identity.API",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/",
+      "ContentRoot": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/Identity.API",
       "RelativePath": "cors-test#[.{fingerprint=gdpgiy4m1o}]?.html.gz",
       "AssetKind": "All",
@@ -49,41 +49,41 @@
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/cors-test.html",
+      "RelatedAsset": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/cors-test.html",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
       "Fingerprint": "mycojv45xt",
       "Integrity": "nqaK5xeHGaIfpMSW3+SnhuPx0C7Pr6KBukqE5VtyOWY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/cors-test.html"
+      "OriginalItemSpec": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/cors-test.html"
     },
     {
-      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "Identity": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-5cor7zris4.gz",
       "SourceId": "Identity.API",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/",
+      "ContentRoot": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/Identity.API",
-      "RelativePath": "staff#[.{fingerprint=4t4fko9das}]?.html.gz",
+      "RelativePath": "staff#[.{fingerprint=5cor7zris4}]?.html.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "RelatedAsset": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/staff.html",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "81q7y19ifv",
-      "Integrity": "jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=",
+      "Fingerprint": "kpjq7zj8ov",
+      "Integrity": "uBYBmQ6BmTrsKExT/XhjseeycDjqKfyoNV9kGTb9T00=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html"
+      "OriginalItemSpec": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/staff.html"
     },
     {
-      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
+      "Identity": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/admin.html",
       "SourceId": "Identity.API",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/",
+      "ContentRoot": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/",
       "BasePath": "_content/Identity.API",
       "RelativePath": "admin#[.{fingerprint}]?.html",
       "AssetKind": "All",
@@ -94,17 +94,17 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "elaubcpvom",
-      "Integrity": "InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=",
+      "Fingerprint": "x0dpdsb4my",
+      "Integrity": "MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/admin.html"
     },
     {
-      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/cors-test.html",
+      "Identity": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/cors-test.html",
       "SourceId": "Identity.API",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/",
+      "ContentRoot": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/",
       "BasePath": "_content/Identity.API",
       "RelativePath": "cors-test#[.{fingerprint}]?.html",
       "AssetKind": "All",
@@ -122,10 +122,10 @@
       "OriginalItemSpec": "wwwroot/cors-test.html"
     },
     {
-      "Identity": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "Identity": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/staff.html",
       "SourceId": "Identity.API",
       "SourceType": "Discovered",
-      "ContentRoot": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/",
+      "ContentRoot": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/",
       "BasePath": "_content/Identity.API",
       "RelativePath": "staff#[.{fingerprint}]?.html",
       "AssetKind": "All",
@@ -136,8 +136,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "4t4fko9das",
-      "Integrity": "GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=",
+      "Fingerprint": "5cor7zris4",
+      "Integrity": "9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/staff.html"
@@ -145,13 +145,13 @@
   ],
   "Endpoints": [
     {
-      "Route": "admin.elaubcpvom.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
+      "Route": "admin.html",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-x0dpdsb4my.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000249066002"
+          "Quality": "0.000184638109"
         }
       ],
       "ResponseHeaders": [
@@ -161,15 +161,152 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4014"
+          "Value": "5415"
         },
         {
           "Name": "ETag",
-          "Value": "\"wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=\""
+          "Value": "\"oHDfYQ0AGtb0OjDvNodHPyU0OXv4eSZJC5sDH+huHOA=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
+          "Value": "Sat, 08 Aug 2026 17:15:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A="
+        }
+      ]
+    },
+    {
+      "Route": "admin.html",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/admin.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "20943"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 08 Aug 2026 17:15:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A="
+        }
+      ]
+    },
+    {
+      "Route": "admin.html.gz",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-x0dpdsb4my.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5415"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oHDfYQ0AGtb0OjDvNodHPyU0OXv4eSZJC5sDH+huHOA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 08 Aug 2026 17:15:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-oHDfYQ0AGtb0OjDvNodHPyU0OXv4eSZJC5sDH+huHOA="
+        }
+      ]
+    },
+    {
+      "Route": "admin.x0dpdsb4my.html",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-x0dpdsb4my.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000184638109"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5415"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oHDfYQ0AGtb0OjDvNodHPyU0OXv4eSZJC5sDH+huHOA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 08 Aug 2026 17:15:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -189,13 +326,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=\""
+          "Value": "W/\"MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "elaubcpvom"
+          "Value": "x0dpdsb4my"
         },
         {
           "Name": "label",
@@ -203,13 +340,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ="
+          "Value": "sha256-MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A="
         }
       ]
     },
     {
-      "Route": "admin.elaubcpvom.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
+      "Route": "admin.x0dpdsb4my.html",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/admin.html",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -218,7 +355,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14297"
+          "Value": "20943"
         },
         {
           "Name": "Content-Type",
@@ -226,11 +363,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=\""
+          "Value": "\"MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
+          "Value": "Sat, 08 Aug 2026 17:15:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -240,7 +377,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "elaubcpvom"
+          "Value": "x0dpdsb4my"
         },
         {
           "Name": "label",
@@ -248,13 +385,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ="
+          "Value": "sha256-MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A="
         }
       ]
     },
     {
-      "Route": "admin.elaubcpvom.html.gz",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
+      "Route": "admin.x0dpdsb4my.html.gz",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-x0dpdsb4my.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -263,7 +400,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "4014"
+          "Value": "5415"
         },
         {
           "Name": "Content-Type",
@@ -271,11 +408,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=\""
+          "Value": "\"oHDfYQ0AGtb0OjDvNodHPyU0OXv4eSZJC5sDH+huHOA=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
+          "Value": "Sat, 08 Aug 2026 17:15:06 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -293,7 +430,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "elaubcpvom"
+          "Value": "x0dpdsb4my"
         },
         {
           "Name": "label",
@@ -301,150 +438,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E="
-        }
-      ]
-    },
-    {
-      "Route": "admin.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.000249066002"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "4014"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/html"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ="
-        }
-      ]
-    },
-    {
-      "Route": "admin.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/admin.html",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "14297"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/html"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-InxR9yVt6EM0RxOgMONauzbSBLaOJKoFAB6bhZ7PZGQ="
-        }
-      ]
-    },
-    {
-      "Route": "admin.html.gz",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-elaubcpvom.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "4014"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/html"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:45:45 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-wKJrUbcm2ETILfQuZhm1tLjYsecpyKseN1cRJ8ghm8E="
+          "Value": "sha256-oHDfYQ0AGtb0OjDvNodHPyU0OXv4eSZJC5sDH+huHOA="
         }
       ]
     },
     {
       "Route": "cors-test.gdpgiy4m1o.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -467,7 +467,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Aug 2026 06:32:16 GMT"
+          "Value": "Fri, 07 Aug 2026 15:44:37 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -507,7 +507,7 @@
     },
     {
       "Route": "cors-test.gdpgiy4m1o.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/cors-test.html",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/cors-test.html",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -528,7 +528,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Aug 2026 06:32:16 GMT"
+          "Value": "Fri, 07 Aug 2026 15:44:37 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -552,7 +552,7 @@
     },
     {
       "Route": "cors-test.gdpgiy4m1o.html.gz",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -573,7 +573,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Aug 2026 06:32:16 GMT"
+          "Value": "Fri, 07 Aug 2026 15:44:37 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -605,7 +605,7 @@
     },
     {
       "Route": "cors-test.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -628,7 +628,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Aug 2026 06:32:16 GMT"
+          "Value": "Fri, 07 Aug 2026 15:44:37 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -660,7 +660,7 @@
     },
     {
       "Route": "cors-test.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/cors-test.html",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/cors-test.html",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -681,7 +681,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Aug 2026 06:32:16 GMT"
+          "Value": "Fri, 07 Aug 2026 15:44:37 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -697,7 +697,7 @@
     },
     {
       "Route": "cors-test.html.gz",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -718,7 +718,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 05 Aug 2026 06:32:16 GMT"
+          "Value": "Fri, 07 Aug 2026 15:44:37 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -741,13 +741,13 @@
       ]
     },
     {
-      "Route": "staff.4t4fko9das.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "Route": "staff.5cor7zris4.html",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-5cor7zris4.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000316656111"
+          "Quality": "0.000549148819"
         }
       ],
       "ResponseHeaders": [
@@ -757,15 +757,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3157"
+          "Value": "1820"
         },
         {
           "Name": "ETag",
-          "Value": "\"jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=\""
+          "Value": "\"uBYBmQ6BmTrsKExT/XhjseeycDjqKfyoNV9kGTb9T00=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+          "Value": "Sat, 08 Aug 2026 15:20:01 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -785,13 +785,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=\""
+          "Value": "W/\"9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4t4fko9das"
+          "Value": "5cor7zris4"
         },
         {
           "Name": "label",
@@ -799,13 +799,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg="
+          "Value": "sha256-9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw="
         }
       ]
     },
     {
-      "Route": "staff.4t4fko9das.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "Route": "staff.5cor7zris4.html",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/staff.html",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -814,7 +814,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "9412"
+          "Value": "4546"
         },
         {
           "Name": "Content-Type",
@@ -822,11 +822,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=\""
+          "Value": "\"9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+          "Value": "Sat, 08 Aug 2026 15:20:01 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -836,7 +836,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4t4fko9das"
+          "Value": "5cor7zris4"
         },
         {
           "Name": "label",
@@ -844,13 +844,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg="
+          "Value": "sha256-9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw="
         }
       ]
     },
     {
-      "Route": "staff.4t4fko9das.html.gz",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "Route": "staff.5cor7zris4.html.gz",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-5cor7zris4.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -859,7 +859,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3157"
+          "Value": "1820"
         },
         {
           "Name": "Content-Type",
@@ -867,11 +867,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=\""
+          "Value": "\"uBYBmQ6BmTrsKExT/XhjseeycDjqKfyoNV9kGTb9T00=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+          "Value": "Sat, 08 Aug 2026 15:20:01 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -889,7 +889,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4t4fko9das"
+          "Value": "5cor7zris4"
         },
         {
           "Name": "label",
@@ -897,18 +897,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g="
+          "Value": "sha256-uBYBmQ6BmTrsKExT/XhjseeycDjqKfyoNV9kGTb9T00="
         }
       ]
     },
     {
       "Route": "staff.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-5cor7zris4.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000316656111"
+          "Quality": "0.000549148819"
         }
       ],
       "ResponseHeaders": [
@@ -918,15 +918,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3157"
+          "Value": "1820"
         },
         {
           "Name": "ETag",
-          "Value": "\"jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=\""
+          "Value": "\"uBYBmQ6BmTrsKExT/XhjseeycDjqKfyoNV9kGTb9T00=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+          "Value": "Sat, 08 Aug 2026 15:20:01 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -946,19 +946,19 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=\""
+          "Value": "W/\"9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg="
+          "Value": "sha256-9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw="
         }
       ]
     },
     {
       "Route": "staff.html",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/wwwroot/staff.html",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/staff.html",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -967,7 +967,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "9412"
+          "Value": "4546"
         },
         {
           "Name": "Content-Type",
@@ -975,11 +975,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg=\""
+          "Value": "\"9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+          "Value": "Sat, 08 Aug 2026 15:20:01 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -989,13 +989,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-GIrFz7bl/494O+zxUWE9WcOqhtbk4EcMglhT+jcr+Mg="
+          "Value": "sha256-9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw="
         }
       ]
     },
     {
       "Route": "staff.html.gz",
-      "AssetFile": "/home/ashish/Identity.Solution/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-4t4fko9das.gz",
+      "AssetFile": "/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-5cor7zris4.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1004,7 +1004,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "3157"
+          "Value": "1820"
         },
         {
           "Name": "Content-Type",
@@ -1012,11 +1012,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g=\""
+          "Value": "\"uBYBmQ6BmTrsKExT/XhjseeycDjqKfyoNV9kGTb9T00=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 04 Aug 2026 18:46:09 GMT"
+          "Value": "Sat, 08 Aug 2026 15:20:01 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1034,7 +1034,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-jJWq0fU4ISdZuRTuaROmuftnFqoi+yuS+qBJlYehj4g="
+          "Value": "sha256-uBYBmQ6BmTrsKExT/XhjseeycDjqKfyoNV9kGTb9T00="
         }
       ]
     }

@@ -550,11 +550,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ashish/Identity.Solution/src/Core/Identity.Domain/Identity.Domain.csproj",
+      "projectUniqueName": "/home/ashish/security/security/src/Core/Identity.Domain/Identity.Domain.csproj",
       "projectName": "Identity.Domain",
-      "projectPath": "/home/ashish/Identity.Solution/src/Core/Identity.Domain/Identity.Domain.csproj",
+      "projectPath": "/home/ashish/security/security/src/Core/Identity.Domain/Identity.Domain.csproj",
       "packagesPath": "/home/ashish/.nuget/packages/",
-      "outputPath": "/home/ashish/Identity.Solution/src/Core/Identity.Domain/obj/",
+      "outputPath": "/home/ashish/security/security/src/Core/Identity.Domain/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/ashish/.nuget/NuGet/NuGet.Config"

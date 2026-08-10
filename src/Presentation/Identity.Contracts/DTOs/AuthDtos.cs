@@ -8,24 +8,14 @@ public record AuthResponseDto(
     string StaffName,
     string Email,
     IList<string> Roles,
-    IList<string> Permissions
-);
-
-public record CreateStaffRequestDto(
-    string Email,
-    string Password,
-    string StaffName,
-    string Department,
-    string Role
+    IList<string> Permissions,
+    bool RequiresMfa = false
 );
 
 public record RefreshTokenRequestDto(string RefreshToken);
 public record RevokeTokenRequestDto(string RefreshToken);
 
-public record RegisterStaffRequestDto(
-    string StaffName,
-    string Email,
-    string Department,
-    string Role,
-    string Password
-);
+// Admin-Only MFA & SSO Contracts
+public record EnableMfaResponseDto(string SecretKey, string QrCodeUri);
+public record VerifyMfaRequestDto(string EmailOrUsername, string Code);
+public record GoogleLoginRequestDto(string IdToken);

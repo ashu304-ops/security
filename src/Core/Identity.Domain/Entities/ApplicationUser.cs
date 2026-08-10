@@ -15,5 +15,9 @@ public class ApplicationUser : IdentityUser<string>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
 
+    // Admin MFA / TOTP Fields
+    public bool IsMfaEnabled { get; set; } = false;
+    public string? MfaSecretKey { get; set; }
+
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 }
