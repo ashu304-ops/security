@@ -12,11 +12,17 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// -----------------------------------------------------------------------------
+// Database Context Setup (MySQL)
+// -----------------------------------------------------------------------------
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36))));
 
+// -----------------------------------------------------------------------------
+// ASP.NET Core Identity Configuration
+// -----------------------------------------------------------------------------
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -27,22 +33,38 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 .AddDefaultTokenProviders();
 
 // -----------------------------------------------------------------------------
-// CORS Configuration (Allows React App on Port 5173 & Port 5137)
+// CORS Configuration
+// Allows React Frontend (5173), Staff Portal (8080), and Static Pages (8137)
 // -----------------------------------------------------------------------------
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:5137", "http://localhost:3000")
-              .SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+        policy.WithOrigins(
+                    "http://localhost:5173", 
+                    "http://127.0.0.1:5173",
+                    "http://localhost:8137", 
+                    "http://127.0.0.1:8137",
+                    "http://localhost:8080", 
+                    "http://127.0.0.1:8080",
+                    "http://localhost:3000"
+              )
+              .SetIsOriginAllowed(origin => 
+                  new Uri(origin).Host == "localhost" || new Uri(origin).Host == "127.0.0.1")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
 
+// -----------------------------------------------------------------------------
+// Application Dependencies & Services
+// -----------------------------------------------------------------------------
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
+// -----------------------------------------------------------------------------
+// JWT Authentication Setup
+// -----------------------------------------------------------------------------
 var secretKey = builder.Configuration["Jwt:SecretKey"] ?? "SuperSecretKeyAtLeast256BitsLongForHmacSha256Security!";
 
 builder.Services.AddAuthentication(options =>
@@ -67,6 +89,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+// -----------------------------------------------------------------------------
+// Swagger Documentation Configuration
+// -----------------------------------------------------------------------------
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Computer Seekho IAM API", Version = "v1" });
@@ -99,6 +124,9 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// -----------------------------------------------------------------------------
+// Database Migration & Seed Initialisation
+// -----------------------------------------------------------------------------
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -115,6 +143,9 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+// -----------------------------------------------------------------------------
+// HTTP Request Pipeline
+// -----------------------------------------------------------------------------
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -131,11 +162,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// If ASPNETCORE_URLS or docker bindings are set, respect them.
-// Otherwise, fall back to binding on 0.0.0.0:8080 across all network interfaces.
+// Bind API server to port 8137 across all network interfaces if no binding is set
 if (!app.Urls.Any())
 {
-    app.Urls.Add("http://0.0.0.0:8080");
+    app.Urls.Add("http://0.0.0.0:8137");
 }
 
 app.Run();

@@ -46,7 +46,8 @@
     .btn-primary { background: var(--accent-green); color: white; width: 100%; }
     .btn-primary:hover { background: var(--accent-green-hover); }
     .btn-danger { background: var(--accent-danger); color: white; }
-    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; width: auto; }
+    .btn-secondary { background: #64748b; color: white; }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; width: auto; margin-right: 0.3rem; }
     
     table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
     th, td { text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-color); }
@@ -55,36 +56,51 @@
     .toast { position: fixed; top: 20px; right: 20px; padding: 1rem 1.5rem; border-radius: 8px; color: white; z-index: 1000; display: none; }
     .toast-success { background: var(--accent-green); }
     .toast-error { background: var(--accent-danger); }
+
+    /* Modal for Quick Role Editing */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); display: none; justify-content: center; align-items: center; z-index: 999; }
+    .modal-card { background: white; padding: 2rem; border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
 
   <div id="toast" class="toast"></div>
 
-  <!-- SUPERADMIN AUTH VIEW -->
+  <!-- ROLE EDIT MODAL -->
+  <div id="role-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h3 style="margin-bottom: 0.5rem;" id="modal-staff-name">Manage User Roles</h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Check or uncheck roles to update staff permissions instantly.</p>
+      
+      <input type="hidden" id="modal-user-id" />
+      <div id="modal-roles-checkboxes" style="max-height: 180px; overflow-y: auto; padding: 0.75rem; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 1.25rem;"></div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button class="btn btn-secondary btn-sm" onclick="closeRoleModal()">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="saveUserRoles()">Save Role Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPERADMIN 2FA VERIFICATION GATE -->
   <div id="auth-view" style="width:100%; display:flex;">
     <div class="auth-container">
       <div class="auth-header">
         <h1>Computer Seekho</h1>
-        <p><strong>SuperAdmin</strong> Identity & Access Portal</p>
+        <p><strong>SuperAdmin</strong> Identity Verification</p>
       </div>
       <form id="login-form">
         <div class="form-group" id="user-group">
-          <label>Admin Username or Email</label>
-          <input type="text" id="login-email" class="form-control" value="admin@computerseekho.com" required />
-        </div>
-        <div class="form-group" id="pass-group">
-          <label>Password</label>
-          <input type="password" id="login-password" class="form-control" value="Admin@1234" required />
+          <label>Admin Email</label>
+          <input type="text" id="login-email" class="form-control" value="admin@computerseekho.com" readonly />
         </div>
 
-        <!-- 2FA Authenticator Code Input (Revealed when MFA is required) -->
-        <div class="form-group" id="mfa-group" style="display:none;">
+        <div class="form-group" id="mfa-group">
           <label style="color: var(--accent-green);">Authenticator 6-Digit Code</label>
-          <input type="text" id="mfa-code" class="form-control" placeholder="123456" maxlength="6" autocomplete="off" />
+          <input type="text" id="mfa-code" class="form-control" placeholder="123456" maxlength="6" autocomplete="off" autofocus required />
         </div>
 
-        <button type="submit" id="btn-submit" class="btn btn-primary">Sign In as SuperAdmin</button>
+        <button type="submit" id="btn-submit" class="btn btn-primary">Verify Code & Enter Portal</button>
       </form>
     </div>
   </div>
@@ -130,7 +146,12 @@
             <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" class="form-control" placeholder="e.g. Tom Warrier" required /></div>
             <div class="form-group"><label>Email</label><input type="email" id="reg-email" class="form-control" placeholder="e.g. tom@computerseekho.com" required /></div>
             <div class="form-group"><label>Department</label><input type="text" id="reg-dept" class="form-control" placeholder="e.g. Counseling" required /></div>
-            <div class="form-group"><label>Role</label><select id="reg-role" class="form-control" required></select></div>
+            
+            <div class="form-group">
+              <label>Assign Initial Role(s)</label>
+              <div id="roles-checkboxes" style="max-height: 150px; overflow-y: auto; padding: 0.75rem; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px;"></div>
+            </div>
+
             <div class="form-group"><label>Password</label><input type="password" id="reg-password" class="form-control" placeholder="••••••••" required /></div>
             <button type="submit" class="btn btn-primary">Create Staff Account</button>
           </form>
@@ -159,7 +180,7 @@
         </div>
       </div>
 
-      <!-- NEW TAB: 2FA SECURITY MANAGEMENT -->
+      <!-- 2FA SECURITY SETUP TAB -->
       <div id="tab-mfa" class="tab-content" style="display:none;">
         <h2>Two-Factor Authentication Setup</h2>
         <div class="card" style="max-width: 500px;">
@@ -193,11 +214,30 @@
 
   <script>
     const API_BASE = 'http://localhost:8137/api';
-    let token = localStorage.getItem('admin_token');
-    let isMfaStep = false;
+    let token = localStorage.getItem('cs_admin_token') || localStorage.getItem('admin_token') || localStorage.getItem('token');
+    let availableSystemRoles = [];
+
+    // Parse URL params (?email=... or ?token=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const passedEmail = urlParams.get('email');
+    const passedToken = urlParams.get('token');
+
+    if (passedEmail) {
+      const emailInput = document.getElementById('login-email');
+      if (emailInput) emailInput.value = passedEmail;
+    }
+
+    if (passedToken) {
+      token = passedToken;
+      localStorage.setItem('admin_token', token);
+      localStorage.setItem('cs_admin_token', token);
+      localStorage.setItem('token', token);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
 
     function showNotification(msg, isError = false) {
       const toast = document.getElementById('toast');
+      if (!toast) return;
       toast.innerText = msg;
       toast.className = `toast ${isError ? 'toast-error' : 'toast-success'}`;
       toast.style.display = 'block';
@@ -205,81 +245,74 @@
     }
 
     async function apiFetch(endpoint, method = 'GET', body = null) {
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) headers['Authorization'] = `Bearer ${token}`;
+      const formattedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+      let activeToken = token || localStorage.getItem('cs_admin_token') || localStorage.getItem('admin_token') || localStorage.getItem('token');
+
+      const headers = { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      };
+      
+      if (activeToken) {
+        headers['Authorization'] = `Bearer ${activeToken}`;
+      }
 
       const config = { method, headers };
       if (body) config.body = JSON.stringify(body);
 
       try {
-        const response = await fetch(`${API_BASE}${endpoint}`, config);
-        const data = await response.json();
+        const fullUrl = `${API_BASE}${formattedEndpoint}`;
+        const response = await fetch(fullUrl, config);
+        
+        // Safely parse text before JSON conversion to prevent unexpected end of data crashes
+        const textData = await response.text();
+        let data = {};
+        try {
+          data = textData ? JSON.parse(textData) : {};
+        } catch (e) {
+          data = { message: textData };
+        }
 
         if (!response.ok) {
           const errorMsg = data?.message || data?.title || (data?.errors ? Object.values(data.errors).flat().join(', ') : `Error ${response.status}`);
-          return { success: false, message: errorMsg };
+          return { success: false, message: errorMsg, status: response.status };
         }
         return data;
       } catch (err) {
+        console.error(`Network Error on ${formattedEndpoint}:`, err);
         return { success: false, message: 'Network or connection error.' };
       }
     }
 
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
+    // Handle 2FA Verification Form Submission
+    document.getElementById('login-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const emailOrUsername = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
+      const emailInput = document.getElementById('login-email');
+      const codeInput = document.getElementById('mfa-code');
 
-      // STEP 2: Verify MFA Code Phase
-      if (isMfaStep) {
-        const code = document.getElementById('mfa-code').value;
-        if (!code || code.length !== 6) {
-          showNotification('Enter a valid 6-digit MFA code.', true);
-          return;
-        }
+      const emailOrUsername = emailInput ? emailInput.value.trim() : '';
+      const code = codeInput ? codeInput.value.trim() : '';
 
-        const res = await apiFetch('/Auth/verify-mfa', 'POST', { emailOrUsername, code });
-        if (res && res.success) {
-          handleAuthSuccess(res.data);
-        } else {
-          showNotification(res?.message || 'MFA Verification Failed', true);
-        }
+      if (!code || code.length !== 6) {
+        showNotification('Enter a valid 6-digit MFA code.', true);
         return;
       }
 
-      // STEP 1: Standard Password Phase
-      const res = await apiFetch('/Auth/login', 'POST', { email: emailOrUsername, password });
-      if (res && res.success) {
-        const roles = res.data.roles || [];
-
-        if (res.data.requiresMfa) {
-          isMfaStep = true;
-          document.getElementById('mfa-group').style.display = 'block';
-          document.getElementById('pass-group').style.display = 'none';
-          document.getElementById('login-email').readOnly = true;
-          document.getElementById('btn-submit').innerText = 'Verify Authenticator Code';
-          showNotification('MFA Required. Check your Authenticator app.');
-        } else {
-          if (!roles.includes('SuperAdmin')) {
-            showNotification('Access Denied! Only SuperAdmins can access this portal.', true);
-            return;
-          }
-          handleAuthSuccess(res.data);
-        }
+      const res = await apiFetch('/Auth/verify-mfa', 'POST', { emailOrUsername, code });
+      if (res && (res.success || res.data?.token || res.data?.accessToken)) {
+        const payload = res.data || res;
+        token = payload.token || payload.accessToken;
+        localStorage.setItem('admin_token', token);
+        localStorage.setItem('cs_admin_token', token);
+        localStorage.setItem('token', token);
+        localStorage.setItem('admin_userInfo', JSON.stringify(payload));
+        
+        showNotification('MFA Verified! Welcome SuperAdmin.');
+        initDashboard();
       } else {
-        showNotification(res?.message || 'Login failed', true);
+        showNotification(res?.message || 'Invalid 2FA Verification Code.', true);
       }
     });
-
-    function handleAuthSuccess(authData) {
-      token = authData.token;
-      localStorage.setItem('admin_token', token);
-      localStorage.setItem('cs_admin_token', token);
-      localStorage.setItem('token', token);
-      localStorage.setItem('admin_userInfo', JSON.stringify(authData));
-      showNotification('SuperAdmin Authenticated!');
-      initDashboard();
-    }
 
     function logout() {
       localStorage.removeItem('admin_token');
@@ -287,131 +320,256 @@
       localStorage.removeItem('token');
       localStorage.removeItem('admin_userInfo');
       token = null;
-      isMfaStep = false;
-      document.getElementById('mfa-group').style.display = 'none';
-      document.getElementById('pass-group').style.display = 'block';
-      document.getElementById('login-email').readOnly = false;
-      document.getElementById('btn-submit').innerText = 'Sign In as SuperAdmin';
-      document.getElementById('dashboard-view').style.display = 'none';
-      document.getElementById('auth-view').style.display = 'flex';
+      window.location.href = 'http://localhost:8137/staff.html';
     }
 
     function initDashboard() {
       const userInfoStr = localStorage.getItem('admin_userInfo');
-      if (!token || !userInfoStr) return logout();
+      let userInfo = {};
+      try { userInfo = userInfoStr ? JSON.parse(userInfoStr) : {}; } catch (e) {}
 
-      try {
-        const userInfo = JSON.parse(userInfoStr);
-        document.getElementById('auth-view').style.display = 'none';
-        document.getElementById('dashboard-view').style.display = 'flex';
-        document.getElementById('user-display-name').innerText = userInfo.staffName || 'SuperAdmin';
-        document.getElementById('user-display-role').innerText = Array.isArray(userInfo.roles) ? userInfo.roles.join(', ') : 'SuperAdmin';
+      const authView = document.getElementById('auth-view');
+      const dashView = document.getElementById('dashboard-view');
+      const displayName = document.getElementById('user-display-name');
+      const displayRole = document.getElementById('user-display-role');
 
-        loadStaff();
-        loadRoles();
-        loadPermissions();
-      } catch (e) {
-        logout();
-      }
+      if (authView) authView.style.display = 'none';
+      if (dashView) dashView.style.display = 'flex';
+      if (displayName) displayName.innerText = userInfo.staffName || userInfo.email || 'SuperAdmin';
+      if (displayRole) displayRole.innerText = Array.isArray(userInfo.roles) ? userInfo.roles.join(', ') : 'SuperAdmin';
+
+      loadStaff();
+      loadRoles();
+      loadPermissions();
     }
 
     function switchTab(tabName, evt) {
       document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      document.getElementById(`tab-${tabName}`).style.display = 'block';
+      
+      const tab = document.getElementById(`tab-${tabName}`);
+      if (tab) tab.style.display = 'block';
       if (evt?.currentTarget) evt.currentTarget.classList.add('active');
     }
 
     async function loadStaff() {
       const res = await apiFetch('/Staff');
-      if (res && res.success) {
-        document.getElementById('staff-table-body').innerHTML = res.data.map(u => `
-          <tr>
-            <td><strong>${u.staffName}</strong></td>
-            <td>${u.email}</td>
-            <td>${u.department || 'N/A'}</td>
-            <td>${u.roles.join(', ')}</td>
-            <td><button class="btn btn-danger btn-sm" onclick="deleteStaff('${u.id}', '${u.staffName}')">Delete</button></td>
-          </tr>
-        `).join('');
+      const staffList = Array.isArray(res) ? res : (res?.data || []);
+      const tableBody = document.getElementById('staff-table-body');
+      
+      if (!tableBody) return;
+
+      if (Array.isArray(staffList) && staffList.length > 0) {
+        tableBody.innerHTML = staffList.map(u => {
+          const userRolesStr = Array.isArray(u.roles) ? u.roles.join(', ') : (u.role || 'N/A');
+          const rolesJsonAttr = encodeURIComponent(JSON.stringify(Array.isArray(u.roles) ? u.roles : [u.role]));
+          
+          return `
+            <tr>
+              <td><strong>${u.staffName || u.userName || 'N/A'}</strong></td>
+              <td>${u.email || 'N/A'}</td>
+              <td>${u.department || 'N/A'}</td>
+              <td><span style="background: #ecfdf5; color: #047857; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">${userRolesStr}</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm" onclick="openRoleModal('${u.id}', '${u.staffName || u.userName}', '${rolesJsonAttr}')">Edit Roles</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteStaff('${u.id}', '${u.staffName || u.userName}')">Delete</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: #64748b;">No staff records found in database.</td></tr>`;
+      }
+    }
+
+    // ON-DEMAND ROLE EDIT MODAL
+    function openRoleModal(userId, name, encodedRoles) {
+      const userIdEl = document.getElementById('modal-user-id');
+      const staffNameEl = document.getElementById('modal-staff-name');
+      const container = document.getElementById('modal-roles-checkboxes');
+      const roleModal = document.getElementById('role-modal');
+
+      if (userIdEl) userIdEl.value = userId;
+      if (staffNameEl) staffNameEl.innerText = `Manage Roles: ${name}`;
+
+      let currentRoles = [];
+      try { currentRoles = JSON.parse(decodeURIComponent(encodedRoles)); } catch(e){}
+
+      if (container) {
+        container.innerHTML = availableSystemRoles.map(r => {
+          const isChecked = currentRoles.includes(r.name) ? 'checked' : '';
+          return `
+            <label style="display: block; margin-bottom: 0.4rem; cursor: pointer; font-weight: 500;">
+              <input type="checkbox" value="${r.name}" class="modal-role-check" ${isChecked} /> ${r.name}
+            </label>
+          `;
+        }).join('');
+      }
+
+      if (roleModal) roleModal.style.display = 'flex';
+    }
+
+    function closeRoleModal() {
+      const roleModal = document.getElementById('role-modal');
+      if (roleModal) roleModal.style.display = 'none';
+    }
+
+    async function saveUserRoles() {
+      const userIdEl = document.getElementById('modal-user-id');
+      const userId = userIdEl ? userIdEl.value : '';
+      const selectedRoles = Array.from(document.querySelectorAll('.modal-role-check:checked')).map(cb => cb.value);
+
+      if (selectedRoles.length === 0) {
+        showNotification('User must have at least one role.', true);
+        return;
+      }
+
+      const res = await apiFetch(`/Staff/${userId}/assign-role`, 'POST', { roles: selectedRoles });
+      if (res && (res.success || res.status === 200)) {
+        showNotification('User roles updated successfully!');
+        closeRoleModal();
+        loadStaff();
+      } else {
+        showNotification(res?.message || 'Failed to update user roles.', true);
       }
     }
 
     async function deleteStaff(id, name) {
       if (confirm(`Delete '${name}'?`)) {
         const res = await apiFetch(`/Staff/${id}`, 'DELETE');
-        if (res && res.success) { showNotification('Deleted'); loadStaff(); }
+        if (res && (res.success || res.status === 200)) { 
+          showNotification('Staff member deleted.'); 
+          loadStaff(); 
+        } else {
+          showNotification(res?.message || 'Failed to delete staff member.', true);
+        }
       }
     }
 
-    document.getElementById('register-staff-form').addEventListener('submit', async (e) => {
+    // REGISTER STAFF HANDLER WITH CHECKBOXES
+    document.getElementById('register-staff-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      const selectedRoles = Array.from(document.querySelectorAll('.reg-role-check:checked')).map(cb => cb.value);
+
+      if (selectedRoles.length === 0) {
+        showNotification('Please select at least one initial role.', true);
+        return;
+      }
+
+      const usernameEl = document.getElementById('reg-username');
+      const nameEl = document.getElementById('reg-name');
+      const emailEl = document.getElementById('reg-email');
+      const deptEl = document.getElementById('reg-dept');
+      const passwordEl = document.getElementById('reg-password');
+
       const body = {
-        username: document.getElementById('reg-username').value.trim(),
-        staffName: document.getElementById('reg-name').value.trim(),
-        email: document.getElementById('reg-email').value.trim(),
-        department: document.getElementById('reg-dept').value.trim(),
-        role: document.getElementById('reg-role').value,
-        password: document.getElementById('reg-password').value
+        username: usernameEl ? usernameEl.value.trim() : '',
+        staffName: nameEl ? nameEl.value.trim() : '',
+        email: emailEl ? emailEl.value.trim() : '',
+        department: deptEl ? deptEl.value.trim() : '',
+        roles: selectedRoles,
+        role: selectedRoles[0],
+        password: passwordEl ? passwordEl.value : ''
       };
 
       const res = await apiFetch('/Auth/register-staff', 'POST', body);
-      if (res && res.success) {
+      if (res && (res.success || res.data)) {
         showNotification('Staff Account Created Successfully!');
         e.target.reset();
         loadStaff();
         switchTab('staff');
-      } else { showNotification(res?.message || 'Failed to create staff account', true); }
+      } else { 
+        showNotification(res?.message || 'Failed to create staff account', true); 
+      }
     });
 
     async function loadRoles() {
       const res = await apiFetch('/Role');
-      if (res && res.success) {
-        document.getElementById('reg-role').innerHTML = res.data.map(r => `<option value="${r.name}">${r.name}</option>`).join('');
-        document.getElementById('roles-list').innerHTML = res.data.map(r => `
-          <div style="padding:0.5rem 0; border-bottom:1px solid #e2e8f0;">
-            <strong>${r.name}</strong> - <small>${r.description || 'No desc'}</small>
-          </div>
-        `).join('');
+      const roleList = Array.isArray(res) ? res : (res?.data || []);
+      availableSystemRoles = roleList;
+
+      if (Array.isArray(roleList) && roleList.length > 0) {
+        const rolesContainer = document.getElementById('roles-checkboxes');
+        const rolesListContainer = document.getElementById('roles-list');
+
+        if (rolesContainer) {
+          rolesContainer.innerHTML = roleList.map(r => `
+            <label style="display: block; margin-bottom: 0.3rem; cursor: pointer;">
+              <input type="checkbox" value="${r.name}" class="reg-role-check" /> ${r.name}
+            </label>
+          `).join('');
+        }
+
+        if (rolesListContainer) {
+          rolesListContainer.innerHTML = roleList.map(r => `
+            <div style="padding:0.5rem 0; border-bottom:1px solid #e2e8f0;">
+              <strong>${r.name}</strong> - <small>${r.description || 'No description'}</small>
+            </div>
+          `).join('');
+        }
       }
     }
 
     async function loadPermissions() {
       const res = await apiFetch('/Permission');
-      if (res && res.success) {
-        document.getElementById('permissions-checkboxes').innerHTML = res.data.map(p => `
-          <label style="display:block; margin-bottom:0.3rem;"><input type="checkbox" value="${p.id}" class="perm-check" /> ${p.name}</label>
+      const permList = Array.isArray(res) ? res : (res?.data || []);
+      const permContainer = document.getElementById('permissions-checkboxes');
+
+      if (permContainer && Array.isArray(permList) && permList.length > 0) {
+        permContainer.innerHTML = permList.map(p => `
+          <label style="display:block; margin-bottom:0.3rem;">
+            <input type="checkbox" value="${p.id}" class="perm-check" /> ${p.name}
+          </label>
         `).join('');
       }
     }
 
-    document.getElementById('create-role-form').addEventListener('submit', async (e) => {
+    document.getElementById('create-role-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const selectedPerms = Array.from(document.querySelectorAll('.perm-check:checked')).map(cb => Number(cb.value)).filter(id => !isNaN(id));
+      const roleNameEl = document.getElementById('role-name');
+      const roleDescEl = document.getElementById('role-desc');
+
       const body = {
-        roleName: document.getElementById('role-name').value.trim(),
-        description: document.getElementById('role-desc').value.trim(),
+        roleName: roleNameEl ? roleNameEl.value.trim() : '',
+        description: roleDescEl ? roleDescEl.value.trim() : '',
         permissionIds: selectedPerms
       };
 
       const res = await apiFetch('/Role', 'POST', body);
-      if (res && res.success) {
+      if (res && (res.success || res.data)) {
         showNotification('Role Created!');
         e.target.reset();
         loadRoles();
-      } else { showNotification(res?.message || 'Failed', true); }
+      } else { 
+        showNotification(res?.message || 'Failed to create role', true); 
+      }
     });
 
-    // -------------------------------------------------------------------------
-    // NEW 2FA FUNCTIONS
-    // -------------------------------------------------------------------------
+    // 2FA SETUP & ACTIVATION
     async function setupMfaUI() {
-      const res = await apiFetch('/Auth/enable-mfa', 'POST');
-      if (res && res.success) {
-        document.getElementById('mfa-qr-image').src = res.data.qrCodeUri;
-        document.getElementById('mfa-secret-text').innerText = res.data.secretKey;
-        document.getElementById('mfa-setup-box').style.display = 'block';
-        document.getElementById('btn-setup-mfa').style.display = 'none';
+      const userInfoStr = localStorage.getItem('admin_userInfo');
+      const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
+      const emailInput = document.getElementById('login-email');
+      const emailOrUsername = userInfo.email || (emailInput ? emailInput.value : 'admin@computerseekho.com');
+
+      const res = await apiFetch('/Auth/enable-mfa', 'POST', { emailOrUsername });
+      if (res && (res.success || res.data)) {
+        const payload = res.data || res;
+        const qrCodeImage = payload.qrCodeUri || payload.qrCodeBase64 || payload.qrCodeGraphic;
+        const secretKey = payload.secretKey || payload.secretKeyBase32;
+
+        const qrImg = document.getElementById('mfa-qr-image');
+        const secretTxt = document.getElementById('mfa-secret-text');
+        const setupBox = document.getElementById('mfa-setup-box');
+        const setupBtn = document.getElementById('btn-setup-mfa');
+
+        if (qrImg) qrImg.src = qrCodeImage;
+        if (secretTxt) secretTxt.innerText = secretKey;
+        if (setupBox) setupBox.style.display = 'block';
+        if (setupBtn) setupBtn.style.display = 'none';
+
         showNotification('2FA Key Generated. Scan QR Code in Authenticator App.');
       } else {
         showNotification(res?.message || 'Failed to generate 2FA key', true);
@@ -419,9 +577,13 @@
     }
 
     async function activateMfaUI() {
-      const code = document.getElementById('mfa-activate-code').value.trim();
-      const userInfo = JSON.parse(localStorage.getItem('admin_userInfo') || '{}');
-      const emailOrUsername = userInfo.email || 'admin@computerseekho.com';
+      const codeEl = document.getElementById('mfa-activate-code');
+      const code = codeEl ? codeEl.value.trim() : '';
+
+      const userInfoStr = localStorage.getItem('admin_userInfo');
+      const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
+      const emailInput = document.getElementById('login-email');
+      const emailOrUsername = userInfo.email || (emailInput ? emailInput.value : 'admin@computerseekho.com');
 
       if (!code || code.length !== 6) {
         showNotification('Please enter a valid 6-digit code.', true);
@@ -429,21 +591,25 @@
       }
 
       const res = await apiFetch('/Auth/verify-mfa', 'POST', { emailOrUsername, code });
-      if (res && res.success) {
+      if (res && (res.success || res.data)) {
         showNotification('Two-Factor Authentication is NOW ACTIVATED!');
-        document.getElementById('mfa-setup-box').style.display = 'none';
-        document.getElementById('btn-setup-mfa').style.display = 'inline-block';
-        document.getElementById('btn-setup-mfa').innerText = '2FA Status: Active';
-        document.getElementById('btn-setup-mfa').disabled = true;
+        const setupBox = document.getElementById('mfa-setup-box');
+        const setupBtn = document.getElementById('btn-setup-mfa');
+
+        if (setupBox) setupBox.style.display = 'none';
+        if (setupBtn) {
+          setupBtn.style.display = 'inline-block';
+          setupBtn.innerText = '2FA Status: Active';
+          setupBtn.disabled = true;
+        }
       } else {
         showNotification(res?.message || 'Verification failed. Try again.', true);
       }
     }
 
-    if (token && localStorage.getItem('admin_userInfo')) {
+    // Initial load check: If token is present, initialize IAM Dashboard directly
+    if (token) {
       initDashboard();
-    } else {
-      logout();
     }
   </script>
 </body>

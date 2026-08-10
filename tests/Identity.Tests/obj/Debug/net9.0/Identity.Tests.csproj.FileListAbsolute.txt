@@ -310,3 +310,16 @@
 /home/ashish/security/security/tests/Identity.Tests/obj/Debug/net9.0/Identity.Tests.pdb
 /home/ashish/security/security/tests/Identity.Tests/obj/Debug/net9.0/Identity.Tests.genruntimeconfig.cache
 /home/ashish/security/security/tests/Identity.Tests/obj/Debug/net9.0/ref/Identity.Tests.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/Google.Apis.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/Google.Apis.Auth.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/Google.Apis.Core.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/Microsoft.Win32.SystemEvents.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/Otp.NET.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/QRCoder.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/System.CodeDom.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/System.Drawing.Common.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/System.Management.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/runtimes/unix/lib/net6.0/System.Drawing.Common.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/runtimes/win/lib/net6.0/System.Drawing.Common.dll
+/home/ashish/security/security/tests/Identity.Tests/bin/Debug/net9.0/runtimes/win/lib/net7.0/System.Management.dll

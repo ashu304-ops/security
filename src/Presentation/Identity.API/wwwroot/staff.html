@@ -6,31 +6,183 @@
   <title>Computer Seekho - Staff Operational Portal</title>
   <style>
     :root {
-      --bg-light: #f8fafc;
-      --bg-white: #ffffff;
-      --accent-blue: #2563eb;
+      --bg-gradient-start: #f0fdf4;
+      --bg-gradient-end: #dcfce7;
+      --card-bg: #ffffff;
+      --primary-green: #059669;
+      --primary-green-hover: #047857;
+      --primary-green-light: #ecfdf5;
+      --border-green: #a7f3d0;
       --text-dark: #0f172a;
-      --border-color: #e2e8f0;
+      --text-muted: #64748b;
+      --border-light: #e2e8f0;
+      --danger-red: #dc2626;
+      --shadow-subtle: 0 20px 25px -5px rgba(5, 150, 105, 0.05), 0 8px 10px -6px rgba(5, 150, 105, 0.03);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: var(--bg-light); color: var(--text-dark); display: flex; height: 100vh; overflow: hidden; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-dark);
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
 
     .auth-container {
-      margin: auto; background: var(--bg-white); padding: 2.5rem; border-radius: 12px;
-      width: 100%; max-width: 420px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 1px solid var(--border-color);
+      margin: auto;
+      background: var(--card-bg);
+      padding: 2.75rem 2.25rem;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow-subtle);
+      border: 1px solid var(--border-green);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .auth-header { text-align: center; margin-bottom: 2rem; }
-    .auth-header h1 { color: var(--accent-blue); font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: 700; }
 
-    .form-group { margin-bottom: 1.25rem; }
-    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem; }
-    .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; outline: none; }
-    .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
-    .btn-primary { background: var(--accent-blue); color: white; width: 100%; }
+    .auth-container:hover {
+      box-shadow: 0 25px 30px -5px rgba(5, 150, 105, 0.08), 0 10px 12px -6px rgba(5, 150, 105, 0.04);
+    }
 
-    .toast { position: fixed; top: 20px; right: 20px; padding: 1rem 1.5rem; border-radius: 8px; color: white; z-index: 1000; display: none; }
-    .toast-success { background: #16a34a; }
-    .toast-error { background: #dc2626; }
+    .brand-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      background-color: var(--primary-green-light);
+      border: 1px solid var(--border-green);
+      border-radius: 14px;
+      color: var(--primary-green);
+      font-weight: 800;
+      font-size: 1.35rem;
+      margin: 0 auto 1.25rem auto;
+      box-shadow: inset 0 2px 4px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-header h1 {
+      color: var(--text-dark);
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.35rem;
+    }
+
+    .auth-header p {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--border-light);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background-color: #fafafa;
+      outline: none;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .form-control:focus {
+      background-color: var(--card-bg);
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12);
+    }
+
+    .form-control::placeholder {
+      color: #94a3b8;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.9rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-green);
+      color: #ffffff;
+      box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-green-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px -2px rgba(5, 150, 105, 0.25);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      padding: 0.9rem 1.4rem;
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      animation: slideIn 0.2s ease-out;
+    }
+
+    .toast-success { background-color: var(--primary-green); }
+    .toast-error { background-color: var(--danger-red); }
+
+    @keyframes slideIn {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -38,23 +190,43 @@
   <div id="toast" class="toast"></div>
 
   <div id="auth-view" style="width:100%; display:flex;">
-    <div class="auth-container">
+    <main class="auth-container">
+      <div class="brand-badge">CS</div>
       <div class="auth-header">
         <h1>Computer Seekho</h1>
-        <p>Staff Operations Workspace</p>
+        <p>Staff Operational Portal</p>
       </div>
+
       <form id="staff-login-form">
         <div class="form-group">
-          <label>Username / Email</label>
-          <input type="text" id="staff-username" class="form-control" placeholder="Enter username or email" required />
+          <label for="staff-username">Username or Email</label>
+          <input 
+            type="text" 
+            id="staff-username" 
+            class="form-control" 
+            placeholder="admin@computerseekho.com" 
+            required 
+            autocomplete="username" 
+          />
         </div>
+
         <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="staff-password" class="form-control" placeholder="••••••••" required />
+          <label for="staff-password">Password</label>
+          <input 
+            type="password" 
+            id="staff-password" 
+            class="form-control" 
+            placeholder="••••••••" 
+            required 
+            autocomplete="current-password" 
+          />
         </div>
-        <button type="submit" class="btn btn-primary">Sign In to Workspace</button>
+
+        <button type="submit" class="btn btn-primary" id="submit-btn">
+          Sign In to Workspace
+        </button>
       </form>
-    </div>
+    </main>
   </div>
 
   <script>
@@ -70,8 +242,12 @@
 
     document.getElementById('staff-login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const usernameInput = document.getElementById('staff-username').value;
+      const submitBtn = document.getElementById('submit-btn');
+      const usernameInput = document.getElementById('staff-username').value.trim();
       const passwordInput = document.getElementById('staff-password').value;
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Authenticating...';
 
       try {
         const response = await fetch(`${API_BASE}/Auth/login`, {
@@ -83,30 +259,45 @@
         const data = await response.json();
 
         if (response.ok && data.success) {
-          const authData = data.data;
-          const token = authData.token;
+          // 1. If 2FA Verification is Required (Already Registered)
+          if (data.message === "MFA_VERIFICATION_REQUIRED" || data.data?.requiresMfa) {
+            showNotification('SuperAdmin 2FA Required. Redirecting...');
+            setTimeout(() => {
+              window.location.href = `http://localhost:8137/admin.html?email=${encodeURIComponent(usernameInput)}`;
+            }, 600);
+            return;
+          }
 
-          // Write token to port 8137 localStorage
+          // 2. Direct Access (Regular Staff or SuperAdmin without 2FA registered yet)
+          const authData = data.data;
+          const token = authData.accessToken || authData.token;
+          const roles = authData.roles || [];
+
           localStorage.setItem('cs_admin_token', token);
+          localStorage.setItem('admin_token', token);
           localStorage.setItem('token', token);
-          localStorage.setItem('cs_admin_staff', JSON.stringify({
-            staffName: authData.staffName,
-            email: authData.email,
-            roles: authData.roles,
-            permissions: authData.permissions
-          }));
+          localStorage.setItem('admin_userInfo', JSON.stringify(authData));
 
           showNotification('Login Successful! Redirecting...');
 
-          // Pass the JWT token across ports in the redirect URL
           setTimeout(() => {
-            window.location.href = `http://localhost:5173/admin/dashboard?token=${encodeURIComponent(token)}`;
-          }, 800);
+            if (roles.includes('SuperAdmin')) {
+              // SuperAdmin without 2FA goes straight to IAM Dashboard in admin.html
+              window.location.href = `http://localhost:8137/admin.html?token=${encodeURIComponent(token)}`;
+            } else {
+              // Regular Staff / Counsellor goes to React Application
+              window.location.href = `http://localhost:5173/admin/dashboard?token=${encodeURIComponent(token)}`;
+            }
+          }, 600);
         } else {
           showNotification(data.message || 'Invalid username or password.', true);
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Sign In to Workspace';
         }
       } catch (err) {
-        showNotification('Network connection error', true);
+        showNotification('Network connection error connecting to API.', true);
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Sign In to Workspace';
       }
     });
   </script>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computer Seekho - Setup SuperAdmin 2FA</title>
+  <style>
+    :root {
+      --bg-light: #f0fdf4;
+      --bg-white: #ffffff;
+      --accent-green: #059669;
+      --accent-green-hover: #047857;
+      --accent-danger: #dc2626;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --green-border: #a7f3d0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: var(--bg-light); color: var(--text-dark); display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 1rem; }
+
+    .setup-card {
+      background: var(--bg-white); padding: 2.5rem; border-radius: 16px;
+      width: 100%; max-width: 460px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--green-border); text-align: center;
+    }
+    .brand-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 52px; height: 52px; background-color: #ecfdf5; border: 1px solid var(--green-border);
+      border-radius: 12px; color: var(--accent-green); font-weight: 800; font-size: 1.15rem; margin-bottom: 1.25rem;
+    }
+    .setup-header h1 { color: var(--text-dark); font-size: 1.5rem; font-weight: 700; }
+    .setup-header p { color: var(--text-muted); font-size: 0.875rem; margin-top: 0.35rem; margin-bottom: 1.5rem; }
+
+    .qr-container {
+      background: #fafafa; border: 1.5px dashed var(--green-border); border-radius: 12px;
+      padding: 1.25rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 220px;
+    }
+    .qr-container img { max-width: 200px; height: auto; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+
+    .secret-key-box {
+      background: #ecfdf5; border: 1px solid var(--green-border); border-radius: 8px;
+      padding: 0.6rem; font-family: monospace; font-size: 0.9rem; font-weight: 700; color: var(--accent-green); word-break: break-all; margin-top: 0.5rem;
+    }
+
+    .form-group { margin-bottom: 1.25rem; text-align: left; }
+    .form-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.825rem; text-transform: uppercase; letter-spacing: 0.03em; text-align: center; }
+    .form-control { width: 100%; padding: 0.8rem 1rem; border: 1.5px solid var(--border-color); border-radius: 8px; outline: none; background-color: #fafafa; }
+    .form-control:focus { background-color: #fff; border-color: var(--accent-green); box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.12); }
+    
+    .mfa-input { font-size: 1.6rem; letter-spacing: 0.35em; text-align: center; font-weight: 700; }
+
+    .btn { padding: 0.85rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; width: 100%; transition: background-color 0.2s ease; }
+    .btn-primary { background: var(--accent-green); color: white; }
+    .btn-primary:hover { background: var(--accent-green-hover); }
+
+    .toast { position: fixed; top: 24px; right: 24px; padding: 0.9rem 1.4rem; border-radius: 10px; color: white; z-index: 1000; display: none; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    .toast-success { background: var(--accent-green); }
+    .toast-error { background: var(--accent-danger); }
+  </style>
+</head>
+<body>
+
+  <div id="toast" class="toast"></div>
+
+  <main class="setup-card">
+    <div class="brand-badge">QR</div>
+    <div class="setup-header">
+      <h1>Register Authenticator App</h1>
+      <p>Scan this QR code using <strong>Microsoft Authenticator</strong> or <strong>Google Authenticator</strong>.</p>
+    </div>
+
+    <div class="qr-container" id="qr-box">
+      <p style="color: var(--text-muted); font-size: 0.9rem;">Generating QR Code...</p>
+    </div>
+
+    <form id="verify-setup-form">
+      <div class="form-group">
+        <label for="setup-code">Verification Code</label>
+        <input 
+          type="text" 
+          id="setup-code" 
+          class="form-control mfa-input" 
+          maxlength="6" 
+          placeholder="000000" 
+          required 
+          autocomplete="off"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="setup-submit-btn">Verify Code & Activate 2FA</button>
+    </form>
+  </main>
+
+  <script>
+    const API_BASE = `${window.location.origin}/api`;
+    const params = new URLSearchParams(window.location.search);
+    const userEmail = params.get('email') || 'admin@computerseekho.com';
+
+    function showNotification(msg, isError = false) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.className = `toast ${isError ? 'toast-error' : 'toast-success'}`;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 4000);
+    }
+
+    async function fetchQrCode() {
+      const qrBox = document.getElementById('qr-box');
+
+      try {
+        const response = await fetch(`${API_BASE}/Auth/enable-mfa`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ emailOrUsername: userEmail })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          const qrCodeImage = data.data.qrCodeUri || data.data.qrCodeBase64 || data.data.qrCodeGraphic;
+          const secretKey = data.data.secretKey || data.data.secretKeyBase32;
+
+          qrBox.innerHTML = `
+            <img src="${qrCodeImage}" alt="2FA QR Code" />
+            <p style="font-size:0.8rem; color: var(--text-muted); margin-top:0.75rem;">Or manually enter secret key:</p>
+            <div class="secret-key-box">${secretKey}</div>
+          `;
+        } else {
+          qrBox.innerHTML = `<p style="color: var(--accent-danger);">Failed to load QR code: ${data.message || 'Error'}</p>`;
+        }
+      } catch (err) {
+        qrBox.innerHTML = `<p style="color: var(--accent-danger);">Connection error loading QR code.</p>`;
+      }
+    }
+
+    document.getElementById('verify-setup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = document.getElementById('setup-code').value.trim();
+      const submitBtn = document.getElementById('setup-submit-btn');
+
+      if (!code || code.length !== 6) {
+        showNotification('Enter a valid 6-digit MFA code.', true);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Activating 2FA...';
+
+      try {
+        const response = await fetch(`${API_BASE}/Auth/verify-mfa`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ emailOrUsername: userEmail, code: code })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          const authData = data.data;
+          const token = authData.token || authData.accessToken;
+
+          localStorage.setItem('admin_token', token);
+          localStorage.setItem('cs_admin_token', token);
+          localStorage.setItem('token', token);
+
+          showNotification('2FA Successfully Activated! Redirecting to Admin Portal...');
+          
+          // REDIRECT SUPERADMIN TO admin.html (STATIC PORTAL)
+          setTimeout(() => {
+            window.location.href = `admin.html?token=${encodeURIComponent(token)}`;
+          }, 600);
+        } else {
+          showNotification(data.message || 'Invalid verification code.', true);
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Verify Code & Activate 2FA';
+        }
+      } catch (err) {
+        showNotification('Network connection error.', true);
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Verify Code & Activate 2FA';
+      }
+    });
+
+    window.onload = fetchQrCode;
+  </script>
+</body>
+</html>

@@ -54,15 +54,30 @@ public class AuthController : ControllerBase
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        // RESTRICTION: Check if user is SuperAdmin and has MFA enabled
-        if (roles.Contains("SuperAdmin") && user.IsMfaEnabled)
+        // ---------------------------------------------------------------------
+        // MFA RESTRICTION: STRICTLY FOR SUPERADMIN ACCOUNTS ONLY
+        // ---------------------------------------------------------------------
+        if (roles.Contains("SuperAdmin"))
         {
+            // Case A: First-time SuperAdmin login -> Prompt QR Code Setup
+            if (!user.IsMfaEnabled)
+            {
+                return Ok(ApiResponse<AuthResponseDto>.Ok(
+                    new AuthResponseDto("", "", user.StaffName, user.Email!, roles.ToList(), new List<string>(), RequiresMfa: true),
+                    "MFA_SETUP_REQUIRED"
+                ));
+            }
+
+            // Case B: Returning SuperAdmin login -> Prompt 6-digit TOTP verification
             return Ok(ApiResponse<AuthResponseDto>.Ok(
                 new AuthResponseDto("", "", user.StaffName, user.Email!, roles.ToList(), new List<string>(), RequiresMfa: true),
-                "MFA verification required for SuperAdmin."
+                "MFA_VERIFICATION_REQUIRED"
             ));
         }
 
+        // ---------------------------------------------------------------------
+        // REGULAR STAFF / COUNSELLOR LOGIN (NO MFA REQUIRED)
+        // ---------------------------------------------------------------------
         var permissions = await (from ur in _db.UserRoles
                                  where ur.UserId == user.Id
                                  join rp in _db.RolePermissions on ur.RoleId equals rp.RoleId
@@ -72,16 +87,15 @@ public class AuthController : ControllerBase
         var (token, jwtId) = _jwtTokenGenerator.GenerateAccessToken(user, roles, permissions);
         var refreshTokenStr = _jwtTokenGenerator.GenerateRefreshToken();
 
-        var refreshTokenEntity = new RefreshToken
+        _db.RefreshTokens.Add(new RefreshToken
         {
             Token = refreshTokenStr,
             JwtId = jwtId,
             UserId = user.Id,
             ExpiryDate = DateTime.UtcNow.AddDays(7),
             IsRevoked = false
-        };
+        });
 
-        _db.RefreshTokens.Add(refreshTokenEntity);
         await _db.SaveChangesAsync();
 
         var response = new AuthResponseDto(
@@ -98,21 +112,27 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("enable-mfa")]
-    [Authorize(Roles = "SuperAdmin")]
-    public async Task<ActionResult<ApiResponse<EnableMfaResponseDto>>> EnableMfa()
+    [AllowAnonymous] // Allows generating onboarding QR code during setup
+    public async Task<ActionResult<ApiResponse<EnableMfaResponseDto>>> EnableMfa([FromBody] MfaSetupRequestDto dto)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var user = await _userManager.FindByIdAsync(userId!);
-        if (user == null) return Unauthorized();
+        var user = await _userManager.FindByNameAsync(dto.EmailOrUsername) 
+                ?? await _userManager.FindByEmailAsync(dto.EmailOrUsername);
+
+        if (user == null || !user.IsActive)
+            return BadRequest(ApiResponse<EnableMfaResponseDto>.Fail("User account not found or inactive."));
 
         // Generate 20-byte random secret key
         var secretKeyBytes = KeyGeneration.GenerateRandomKey(20);
         var secretKeyBase32 = Base32Encoding.ToString(secretKeyBytes);
 
+        // Persist the generated key immediately
         user.MfaSecretKey = secretKeyBase32;
-        await _userManager.UpdateAsync(user);
+        var updateResult = await _userManager.UpdateAsync(user);
 
-        // Build TOTP URI
+        if (!updateResult.Succeeded)
+            return BadRequest(ApiResponse<EnableMfaResponseDto>.Fail("Failed to save MFA secret key to user account."));
+
+        // Build TOTP URI for Authenticator App
         var otpUri = $"otpauth://totp/ComputerSeekhoAdmin:{user.Email}?secret={secretKeyBase32}&issuer=ComputerSeekho";
 
         // Generate QR Code PNG Data URI
@@ -124,7 +144,7 @@ public class AuthController : ControllerBase
 
         return Ok(ApiResponse<EnableMfaResponseDto>.Ok(
             new EnableMfaResponseDto(secretKeyBase32, qrCodeBase64),
-            "Admin MFA secret generated. Scan QR code in Authenticator app."
+            "Admin MFA secret generated successfully. Scan QR code in Authenticator app."
         ));
     }
 
@@ -144,11 +164,14 @@ public class AuthController : ControllerBase
         var secretBytes = Base32Encoding.ToBytes(user.MfaSecretKey);
         var totp = new Totp(secretBytes);
 
-        bool isValid = totp.VerifyTotp(dto.Code, out _, VerificationWindow.RfcSpecifiedNetworkDelay);
+        // Allow a +/- 60 seconds time window tolerance for clock drift
+        var window = new VerificationWindow(previous: 2, future: 2);
+        bool isValid = totp.VerifyTotp(dto.Code, out _, window);
+
         if (!isValid)
             return BadRequest(ApiResponse<AuthResponseDto>.Fail("Invalid or expired 6-digit MFA code."));
 
-        // Enable MFA for user upon successful first verification
+        // Permanently enable MFA for user upon successful verification
         user.IsMfaEnabled = true;
         await _userManager.UpdateAsync(user);
 
@@ -347,3 +370,5 @@ public class AuthController : ControllerBase
         return Ok(ApiResponse<string>.Ok(storedToken.Token, "Refresh token revoked successfully."));
     }
 }
+
+public record MfaSetupRequestDto(string EmailOrUsername);

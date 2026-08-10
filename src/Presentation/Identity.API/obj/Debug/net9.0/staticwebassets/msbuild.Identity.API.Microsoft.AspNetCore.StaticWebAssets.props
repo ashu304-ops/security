@@ -12,8 +12,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>x0dpdsb4my</Fingerprint>
-      <Integrity>MdsFtz41EooCCnDT16d7RVnmI5Fyv0SuundGLh5MP9A=</Integrity>
+      <Fingerprint>uw8biyazik</Fingerprint>
+      <Integrity>IoQlafXtnVq8w38RqfB/w88C2svBwgIHfjizhkVuJAQ=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\admin.html'))</OriginalItemSpec>
@@ -36,6 +36,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\cors-test.html'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\setup-mfa.html'))">
+      <SourceType>Package</SourceType>
+      <SourceId>Identity.API</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Identity.API</BasePath>
+      <RelativePath>setup-mfa.html</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>9g4objlykd</Fingerprint>
+      <Integrity>d+wRN8oxlWGLzSFIG5H1WGGvSZnNb9zRxqJcWgJAPfA=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\setup-mfa.html'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\staff.html'))">
       <SourceType>Package</SourceType>
       <SourceId>Identity.API</SourceId>
@@ -48,8 +66,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5cor7zris4</Fingerprint>
-      <Integrity>9ba+D0WgmFMWEfXWIGcAPdddmf+7UsD3AhJTEQ8sHgw=</Integrity>
+      <Fingerprint>0eew8b4gm1</Fingerprint>
+      <Integrity>KJvMsNsFH1qMxHZkfUsIFdvdtOU0c7LVFHxGfEveeTQ=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\staff.html'))</OriginalItemSpec>

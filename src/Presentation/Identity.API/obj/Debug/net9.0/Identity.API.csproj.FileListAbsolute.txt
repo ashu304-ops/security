@@ -305,7 +305,6 @@
 /home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/Identity.API.sourcelink.json
 /home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/scopedcss/bundle/Identity.API.styles.css
 /home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/hv60rnbgde-gdpgiy4m1o.gz
-/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-5cor7zris4.gz
 /home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/staticwebassets.build.json
 /home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/staticwebassets.development.json
 /home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/staticwebassets.build.endpoints.json
@@ -334,4 +333,6 @@
 /home/ashish/security/security/src/Presentation/Identity.API/bin/Debug/net9.0/runtimes/unix/lib/net6.0/System.Drawing.Common.dll
 /home/ashish/security/security/src/Presentation/Identity.API/bin/Debug/net9.0/runtimes/win/lib/net6.0/System.Drawing.Common.dll
 /home/ashish/security/security/src/Presentation/Identity.API/bin/Debug/net9.0/runtimes/win/lib/net7.0/System.Management.dll
-/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-x0dpdsb4my.gz
+/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/vwe7fr1lte-9g4objlykd.gz
+/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/r7b1wjsk7u-0eew8b4gm1.gz
+/home/ashish/security/security/src/Presentation/Identity.API/obj/Debug/net9.0/compressed/b4ct96ytpc-uw8biyazik.gz

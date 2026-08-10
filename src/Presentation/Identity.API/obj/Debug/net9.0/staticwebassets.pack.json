@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets/cors-test.html"
     },
     {
+      "Id": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/setup-mfa.html",
+      "PackagePath": "staticwebassets/setup-mfa.html"
+    },
+    {
       "Id": "/home/ashish/security/security/src/Presentation/Identity.API/wwwroot/staff.html",
       "PackagePath": "staticwebassets/staff.html"
     },

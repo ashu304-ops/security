@@ -374,6 +374,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.75.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[9.0.*, )"
@@ -391,6 +395,14 @@
             "Microsoft.OpenApi": {
               "target": "Package",
               "version": "[1.6.22, )"
+            },
+            "Otp.NET": {
+              "target": "Package",
+              "version": "[1.4.1, )"
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.8.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

@@ -8,16 +8,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.API.Controllers;
 
+// Request DTO for flexible single or multi-role updates
+public record UpdateRolesRequestDto(List<string>? Roles, string? RoleName);
+
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = "SuperAdmin")]
 public class StaffController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
 
-    public StaffController(UserManager<ApplicationUser> userManager)
+    public StaffController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
     {
         _userManager = userManager;
+        _roleManager = roleManager;
     }
 
     [HttpGet]
@@ -78,37 +83,67 @@ public class StaffController : ControllerBase
         return Ok(ApiResponse<string>.Ok(user.Id, $"Staff active status updated to {dto.IsActive}."));
     }
 
+    /// <summary>
+    /// Replaces user roles with single or multiple assigned roles
+    /// Route: POST /api/Staff/{id}/assign-role or PUT /api/Staff/{id}/roles
+    /// </summary>
     [HttpPost("{id}/assign-role")]
-    public async Task<ActionResult<ApiResponse<string>>> AssignRole(string id, [FromBody] AssignRoleRequestDto dto)
+    [HttpPut("{id}/roles")]
+    public async Task<ActionResult<ApiResponse<string>>> AssignRoles(string id, [FromBody] UpdateRolesRequestDto dto)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user == null)
             return NotFound(ApiResponse<string>.Fail("Staff user not found."));
 
+        // Build list of target roles from payload
+        var rolesToAssign = dto.Roles ?? new List<string>();
+        if (!string.IsNullOrWhiteSpace(dto.RoleName) && !rolesToAssign.Contains(dto.RoleName))
+        {
+            rolesToAssign.Add(dto.RoleName);
+        }
+
+        if (!rolesToAssign.Any())
+        {
+            return BadRequest(ApiResponse<string>.Fail("User must be assigned at least one role."));
+        }
+
+        // Validate that requested roles exist in database
+        foreach (var roleName in rolesToAssign)
+        {
+            if (!await _roleManager.RoleExistsAsync(roleName))
+            {
+                return BadRequest(ApiResponse<string>.Fail($"Role '{roleName}' does not exist."));
+            }
+        }
+
+        // Remove old roles and assign new roles
         var currentRoles = await _userManager.GetRolesAsync(user);
         await _userManager.RemoveFromRolesAsync(user, currentRoles);
 
-        var result = await _userManager.AddToRoleAsync(user, dto.RoleName);
+        var result = await _userManager.AddToRolesAsync(user, rolesToAssign);
         if (!result.Succeeded)
-            return BadRequest(ApiResponse<string>.Fail(string.Join(", ", result.Errors.Select(e => e.Description))));
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return BadRequest(ApiResponse<string>.Fail(errors));
+        }
 
-        return Ok(ApiResponse<string>.Ok(user.Id, $"Role '{dto.RoleName}' assigned successfully."));
+        return Ok(ApiResponse<string>.Ok(user.Id, $"Roles updated to: {string.Join(", ", rolesToAssign)}"));
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult<ApiResponse<string>>> DeleteStaff(string id)
     {
-    var user = await _userManager.FindByIdAsync(id);
-    if (user == null)
-        return NotFound(ApiResponse<string>.Fail("Staff user not found."));
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null)
+            return NotFound(ApiResponse<string>.Fail("Staff user not found."));
 
-    var result = await _userManager.DeleteAsync(user);
-    if (!result.Succeeded)
-    {
-        var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-        return BadRequest(ApiResponse<string>.Fail(errors));
-    }
+        var result = await _userManager.DeleteAsync(user);
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return BadRequest(ApiResponse<string>.Fail(errors));
+        }
 
-    return Ok(ApiResponse<string>.Ok(id, "Staff user deleted successfully."));
+        return Ok(ApiResponse<string>.Ok(id, "Staff user deleted successfully."));
     }
 }
