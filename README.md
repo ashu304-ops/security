@@ -269,54 +269,7 @@ async function fetchCourseData() {
 
 ---
 
-## 7. Deployment Orchestration (`docker-compose.yml`)
 
-The Docker Compose configuration uses a 30-second start period health check buffer to ensure MySQL completes database initialization before the backend connects:
-
-```yaml
-networks:
-  cs-network:
-    driver: bridge
-
-volumes:
-  cs-mysql-data:
-    driver: local
-
-services:
-  cs-iam-mysql:
-    image: mysql:8.0
-    container_name: cs-iam-mysql
-    restart: always
-    networks:
-      - cs-network
-    ports:
-      - "3310:3006"
-    environment:
-      MYSQL_ROOT_PASSWORD: "Ashu@1234"
-      MYSQL_DATABASE: "ComputerSeekhoDb"
-    command: --port=3006 --default-authentication-plugin=mysql_native_password
-    volumes:
-      - cs-mysql-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-P", "3006", "-u", "root", "-pAshu@1234"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
-
-  cs-iam-backend:
-    image: ashu304/cs-iam-backend:latest
-    container_name: cs-iam-backend
-    restart: always
-    networks:
-      - cs-network
-    ports:
-      - "8137:8137"
-    environment:
-      - ConnectionStrings__DefaultConnection=Server=cs-iam-mysql;Port=3006;Database=ComputerSeekhoDb;User=root;Password=Ashu@1234;TreatTinyAsBoolean=true;
-      - Jwt__SecretKey=SuperSecretKeyAtLeast256BitsLongForHmacSha256Security!
-      - Jwt__Issuer=Identity.API
-      - Jwt__Audience=ComputerSeekho.Client
       - ASPNETCORE_ENVIRONMENT=Production
     depends_on:
       cs-iam-mysql:
