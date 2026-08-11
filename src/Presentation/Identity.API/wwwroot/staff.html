@@ -230,7 +230,7 @@
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:8137/api';
+    const API_BASE = window.location.origin + '/api';
 
     function showNotification(msg, isError = false) {
       const toast = document.getElementById('toast');
@@ -259,16 +259,17 @@
         const data = await response.json();
 
         if (response.ok && data.success) {
-          // 1. If 2FA Verification is Required (Already Registered)
+          // 1. If 2FA Verification is Required
           if (data.message === "MFA_VERIFICATION_REQUIRED" || data.data?.requiresMfa) {
             showNotification('SuperAdmin 2FA Required. Redirecting...');
             setTimeout(() => {
-              window.location.href = `http://localhost:8137/admin.html?email=${encodeURIComponent(usernameInput)}`;
+              // DYNAMIC RELATIVE REDIRECT
+              window.location.href = `${window.location.origin}/admin.html?email=${encodeURIComponent(usernameInput)}`;
             }, 600);
             return;
           }
 
-          // 2. Direct Access (Regular Staff or SuperAdmin without 2FA registered yet)
+          // 2. Direct Access
           const authData = data.data;
           const token = authData.accessToken || authData.token;
           const roles = authData.roles || [];
@@ -282,11 +283,12 @@
 
           setTimeout(() => {
             if (roles.includes('SuperAdmin')) {
-              // SuperAdmin without 2FA goes straight to IAM Dashboard in admin.html
-              window.location.href = `http://localhost:8137/admin.html?token=${encodeURIComponent(token)}`;
+              // DYNAMIC IAM ADMIN REDIRECT
+              window.location.href = `${window.location.origin}/admin.html?token=${encodeURIComponent(token)}`;
             } else {
-              // Regular Staff / Counsellor goes to React Application
-              window.location.href = `http://localhost:5173/admin/dashboard?token=${encodeURIComponent(token)}`;
+              // DYNAMIC REACT APP REDIRECT (Preserves hostname across Docker/IPs)
+              const reactHost = window.location.hostname;
+              window.location.href = `${window.location.protocol}//${reactHost}:5173/admin/dashboard?token=${encodeURIComponent(token)}`;
             }
           }, 600);
         } else {

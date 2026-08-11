@@ -22,16 +22,16 @@ RUN dotnet build -c Release -o /app/build
 RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
 # ==========================================
-# STAGE 2: Runtime (.NET 9 ASP.NET ASP.NET)
+# STAGE 2: Runtime (.NET 9 ASP.NET)
 # ==========================================
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 
-# Copy compiled artifacts from Stage 1
+# Copy compiled artifacts from Stage 1 (includes wwwroot)
 COPY --from=build /app/publish .
 
-# Expose internal container port
-ENV ASPNETCORE_URLS=http://+:8080
-EXPOSE 8080
+# Expose internal container port 8137
+ENV ASPNETCORE_URLS=http://+:8137
+EXPOSE 8137
 
 ENTRYPOINT ["dotnet", "Identity.API.dll"]

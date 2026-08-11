@@ -54,23 +54,60 @@ public class AuthController : ControllerBase
 
         var roles = await _userManager.GetRolesAsync(user);
 
+        // Fetch User Permissions
+        var permissions = await (from ur in _db.UserRoles
+                                 where ur.UserId == user.Id
+                                 join rp in _db.RolePermissions on ur.RoleId equals rp.RoleId
+                                 join p in _db.Permissions on rp.PermissionId equals p.Id
+                                 select p.Name).Distinct().ToListAsync();
+
         // ---------------------------------------------------------------------
         // MFA RESTRICTION: STRICTLY FOR SUPERADMIN ACCOUNTS ONLY
         // ---------------------------------------------------------------------
         if (roles.Contains("SuperAdmin"))
         {
-            // Case A: First-time SuperAdmin login -> Prompt QR Code Setup
+            // Case A: First-time SuperAdmin login (MFA NOT registered yet)
+            // Grant temporary access token so frontend can navigate to QR registration screen
             if (!user.IsMfaEnabled)
             {
+                var (setupToken, setupJwtId) = _jwtTokenGenerator.GenerateAccessToken(user, roles, permissions);
+                var setupRefreshToken = _jwtTokenGenerator.GenerateRefreshToken();
+
+                _db.RefreshTokens.Add(new RefreshToken
+                {
+                    Token = setupRefreshToken,
+                    JwtId = setupJwtId,
+                    UserId = user.Id,
+                    ExpiryDate = DateTime.UtcNow.AddDays(7),
+                    IsRevoked = false
+                });
+                await _db.SaveChangesAsync();
+
                 return Ok(ApiResponse<AuthResponseDto>.Ok(
-                    new AuthResponseDto("", "", user.StaffName, user.Email!, roles.ToList(), new List<string>(), RequiresMfa: true),
+                    new AuthResponseDto(
+                        setupToken, 
+                        setupRefreshToken, 
+                        user.StaffName, 
+                        user.Email ?? user.UserName!, 
+                        roles.ToList(), 
+                        permissions, 
+                        RequiresMfa: false // <-- Set false so UI routes to admin onboarding
+                    ),
                     "MFA_SETUP_REQUIRED"
                 ));
             }
 
-            // Case B: Returning SuperAdmin login -> Prompt 6-digit TOTP verification
+            // Case B: Returning SuperAdmin login -> Prompt for 6-digit TOTP code
             return Ok(ApiResponse<AuthResponseDto>.Ok(
-                new AuthResponseDto("", "", user.StaffName, user.Email!, roles.ToList(), new List<string>(), RequiresMfa: true),
+                new AuthResponseDto(
+                    Token: "", 
+                    RefreshToken: "", 
+                    user.StaffName, 
+                    user.Email ?? user.UserName!, 
+                    roles.ToList(), 
+                    new List<string>(), 
+                    RequiresMfa: true // <-- Set true to show 6-digit input UI
+                ),
                 "MFA_VERIFICATION_REQUIRED"
             ));
         }
@@ -78,12 +115,6 @@ public class AuthController : ControllerBase
         // ---------------------------------------------------------------------
         // REGULAR STAFF / COUNSELLOR LOGIN (NO MFA REQUIRED)
         // ---------------------------------------------------------------------
-        var permissions = await (from ur in _db.UserRoles
-                                 where ur.UserId == user.Id
-                                 join rp in _db.RolePermissions on ur.RoleId equals rp.RoleId
-                                 join p in _db.Permissions on rp.PermissionId equals p.Id
-                                 select p.Name).Distinct().ToListAsync();
-
         var (token, jwtId) = _jwtTokenGenerator.GenerateAccessToken(user, roles, permissions);
         var refreshTokenStr = _jwtTokenGenerator.GenerateRefreshToken();
 

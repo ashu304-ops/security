@@ -40,17 +40,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins(
-                    "http://localhost:5173", 
-                    "http://127.0.0.1:5173",
-                    "http://localhost:8137", 
-                    "http://127.0.0.1:8137",
-                    "http://localhost:8080", 
-                    "http://127.0.0.1:8080",
-                    "http://localhost:3000"
-              )
-              .SetIsOriginAllowed(origin => 
-                  new Uri(origin).Host == "localhost" || new Uri(origin).Host == "127.0.0.1")
+        policy.SetIsOriginAllowed(origin => 
+              {
+                  if (string.IsNullOrEmpty(origin)) return false;
+                  var uri = new Uri(origin);
+                  return uri.Host == "localhost" || 
+                         uri.Host == "127.0.0.1" || 
+                         uri.Host.StartsWith("192.168.") || 
+                         uri.Host.StartsWith("10.");
+              })
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -82,7 +80,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "Identity.API",
         ValidAudience = builder.Configuration["Jwt:Audience"] ?? "ComputerSeekho.Client",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+        ClockSkew = TimeSpan.FromMinutes(2)
     };
 });
 
@@ -144,7 +143,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 // -----------------------------------------------------------------------------
-// HTTP Request Pipeline
+// HTTP Request Pipeline (Order is critical!)
 // -----------------------------------------------------------------------------
 if (app.Environment.IsDevelopment())
 {
@@ -155,6 +154,8 @@ if (app.Environment.IsDevelopment())
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.UseRouting(); // Enabled explicitly before CORS & Auth
+
 app.UseCors("AllowReactApp");
 
 app.UseAuthentication();
@@ -162,7 +163,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Bind API server to port 8137 across all network interfaces if no binding is set
+// Ensure default listener binds to 8137
 if (!app.Urls.Any())
 {
     app.Urls.Add("http://0.0.0.0:8137");

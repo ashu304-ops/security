@@ -213,11 +213,9 @@
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:8137/api';
-    let token = localStorage.getItem('cs_admin_token') || localStorage.getItem('admin_token') || localStorage.getItem('token');
-    let availableSystemRoles = [];
+    const API_BASE = window.location.origin + '/api';
 
-    // Parse URL params (?email=... or ?token=...)
+    // 1. EXTRACT URL PARAMETERS BEFORE INITIALIZING STORAGE OR TOKENS
     const urlParams = new URLSearchParams(window.location.search);
     const passedEmail = urlParams.get('email');
     const passedToken = urlParams.get('token');
@@ -228,12 +226,15 @@
     }
 
     if (passedToken) {
-      token = passedToken;
-      localStorage.setItem('admin_token', token);
-      localStorage.setItem('cs_admin_token', token);
-      localStorage.setItem('token', token);
+      localStorage.setItem('admin_token', passedToken);
+      localStorage.setItem('cs_admin_token', passedToken);
+      localStorage.setItem('token', passedToken);
       window.history.replaceState({}, document.title, window.location.pathname);
     }
+
+    // 2. READ ACTIVE TOKEN FROM LOCALSTORAGE AFTER URL PARSING
+    let token = localStorage.getItem('admin_token') || localStorage.getItem('cs_admin_token') || localStorage.getItem('token');
+    let availableSystemRoles = [];
 
     function showNotification(msg, isError = false) {
       const toast = document.getElementById('toast');
@@ -246,7 +247,7 @@
 
     async function apiFetch(endpoint, method = 'GET', body = null) {
       const formattedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-      let activeToken = token || localStorage.getItem('cs_admin_token') || localStorage.getItem('admin_token') || localStorage.getItem('token');
+      let activeToken = localStorage.getItem('admin_token') || localStorage.getItem('cs_admin_token') || localStorage.getItem('token') || token;
 
       const headers = { 
         'Content-Type': 'application/json',
@@ -264,7 +265,6 @@
         const fullUrl = `${API_BASE}${formattedEndpoint}`;
         const response = await fetch(fullUrl, config);
         
-        // Safely parse text before JSON conversion to prevent unexpected end of data crashes
         const textData = await response.text();
         let data = {};
         try {
@@ -290,7 +290,7 @@
       const emailInput = document.getElementById('login-email');
       const codeInput = document.getElementById('mfa-code');
 
-      const emailOrUsername = emailInput ? emailInput.value.trim() : '';
+      const emailOrUsername = (emailInput && emailInput.value ? emailInput.value : 'admin@computerseekho.com').trim();
       const code = codeInput ? codeInput.value.trim() : '';
 
       if (!code || code.length !== 6) {
@@ -298,7 +298,7 @@
         return;
       }
 
-      const res = await apiFetch('/Auth/verify-mfa', 'POST', { emailOrUsername, code });
+      const res = await apiFetch('/Auth/verify-mfa', 'POST', { EmailOrUsername: emailOrUsername, Code: code });
       if (res && (res.success || res.data?.token || res.data?.accessToken)) {
         const payload = res.data || res;
         token = payload.token || payload.accessToken;
@@ -308,7 +308,7 @@
         localStorage.setItem('admin_userInfo', JSON.stringify(payload));
         
         showNotification('MFA Verified! Welcome SuperAdmin.');
-        initDashboard();
+        await initDashboard();
       } else {
         showNotification(res?.message || 'Invalid 2FA Verification Code.', true);
       }
@@ -320,10 +320,11 @@
       localStorage.removeItem('token');
       localStorage.removeItem('admin_userInfo');
       token = null;
-      window.location.href = 'http://localhost:8137/staff.html';
+      window.location.href = `${window.location.origin}/staff.html`;
     }
 
-    function initDashboard() {
+    // 3. SEQUENTIAL DASHBOARD INITIALIZATION
+    async function initDashboard() {
       const userInfoStr = localStorage.getItem('admin_userInfo');
       let userInfo = {};
       try { userInfo = userInfoStr ? JSON.parse(userInfoStr) : {}; } catch (e) {}
@@ -338,9 +339,10 @@
       if (displayName) displayName.innerText = userInfo.staffName || userInfo.email || 'SuperAdmin';
       if (displayRole) displayRole.innerText = Array.isArray(userInfo.roles) ? userInfo.roles.join(', ') : 'SuperAdmin';
 
-      loadStaff();
-      loadRoles();
-      loadPermissions();
+      // Ensure queries run sequentially with active tokens
+      await loadRoles();
+      await loadPermissions();
+      await loadStaff();
     }
 
     function switchTab(tabName, evt) {
@@ -382,7 +384,6 @@
       }
     }
 
-    // ON-DEMAND ROLE EDIT MODAL
     function openRoleModal(userId, name, encodedRoles) {
       const userIdEl = document.getElementById('modal-user-id');
       const staffNameEl = document.getElementById('modal-staff-name');
@@ -428,7 +429,7 @@
       if (res && (res.success || res.status === 200)) {
         showNotification('User roles updated successfully!');
         closeRoleModal();
-        loadStaff();
+        await loadStaff();
       } else {
         showNotification(res?.message || 'Failed to update user roles.', true);
       }
@@ -439,14 +440,13 @@
         const res = await apiFetch(`/Staff/${id}`, 'DELETE');
         if (res && (res.success || res.status === 200)) { 
           showNotification('Staff member deleted.'); 
-          loadStaff(); 
+          await loadStaff(); 
         } else {
           showNotification(res?.message || 'Failed to delete staff member.', true);
         }
       }
     }
 
-    // REGISTER STAFF HANDLER WITH CHECKBOXES
     document.getElementById('register-staff-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -477,7 +477,7 @@
       if (res && (res.success || res.data)) {
         showNotification('Staff Account Created Successfully!');
         e.target.reset();
-        loadStaff();
+        await loadStaff();
         switchTab('staff');
       } else { 
         showNotification(res?.message || 'Failed to create staff account', true); 
@@ -489,10 +489,10 @@
       const roleList = Array.isArray(res) ? res : (res?.data || []);
       availableSystemRoles = roleList;
 
-      if (Array.isArray(roleList) && roleList.length > 0) {
-        const rolesContainer = document.getElementById('roles-checkboxes');
-        const rolesListContainer = document.getElementById('roles-list');
+      const rolesContainer = document.getElementById('roles-checkboxes');
+      const rolesListContainer = document.getElementById('roles-list');
 
+      if (Array.isArray(roleList) && roleList.length > 0) {
         if (rolesContainer) {
           rolesContainer.innerHTML = roleList.map(r => `
             <label style="display: block; margin-bottom: 0.3rem; cursor: pointer;">
@@ -541,23 +541,30 @@
       if (res && (res.success || res.data)) {
         showNotification('Role Created!');
         e.target.reset();
-        loadRoles();
+        await loadRoles();
       } else { 
         showNotification(res?.message || 'Failed to create role', true); 
       }
     });
 
-    // 2FA SETUP & ACTIVATION
+    // 4. ROBUST MFA SETUP & ACTIVATION (ALWAYS USES VALID TARGET EMAIL)
     async function setupMfaUI() {
-      const userInfoStr = localStorage.getItem('admin_userInfo');
-      const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
       const emailInput = document.getElementById('login-email');
-      const emailOrUsername = userInfo.email || (emailInput ? emailInput.value : 'admin@computerseekho.com');
+      const userInfoStr = localStorage.getItem('admin_userInfo');
+      let userInfo = {};
+      try { userInfo = userInfoStr ? JSON.parse(userInfoStr) : {}; } catch(e) {}
 
-      const res = await apiFetch('/Auth/enable-mfa', 'POST', { emailOrUsername });
+      // Prioritize the read-only input value on page, fallback to stored email or default admin
+      const targetEmail = (
+        (emailInput && emailInput.value ? emailInput.value.trim() : '') ||
+        (userInfo.email ? userInfo.email.trim() : '') ||
+        'admin@computerseekho.com'
+      );
+
+      const res = await apiFetch('/Auth/enable-mfa', 'POST', { EmailOrUsername: targetEmail });
       if (res && (res.success || res.data)) {
         const payload = res.data || res;
-        const qrCodeImage = payload.qrCodeUri || payload.qrCodeBase64 || payload.qrCodeGraphic;
+        const qrCodeImage = payload.qrCodeGraphic || payload.qrCodeBase64 || payload.qrCodeUri;
         const secretKey = payload.secretKey || payload.secretKeyBase32;
 
         const qrImg = document.getElementById('mfa-qr-image');
@@ -580,17 +587,23 @@
       const codeEl = document.getElementById('mfa-activate-code');
       const code = codeEl ? codeEl.value.trim() : '';
 
-      const userInfoStr = localStorage.getItem('admin_userInfo');
-      const userInfo = userInfoStr ? JSON.parse(userInfoStr) : {};
       const emailInput = document.getElementById('login-email');
-      const emailOrUsername = userInfo.email || (emailInput ? emailInput.value : 'admin@computerseekho.com');
+      const userInfoStr = localStorage.getItem('admin_userInfo');
+      let userInfo = {};
+      try { userInfo = userInfoStr ? JSON.parse(userInfoStr) : {}; } catch(e) {}
+
+      const targetEmail = (
+        (emailInput && emailInput.value ? emailInput.value.trim() : '') ||
+        (userInfo.email ? userInfo.email.trim() : '') ||
+        'admin@computerseekho.com'
+      );
 
       if (!code || code.length !== 6) {
         showNotification('Please enter a valid 6-digit code.', true);
         return;
       }
 
-      const res = await apiFetch('/Auth/verify-mfa', 'POST', { emailOrUsername, code });
+      const res = await apiFetch('/Auth/verify-mfa', 'POST', { EmailOrUsername: targetEmail, Code: code });
       if (res && (res.success || res.data)) {
         showNotification('Two-Factor Authentication is NOW ACTIVATED!');
         const setupBox = document.getElementById('mfa-setup-box');
@@ -607,7 +620,7 @@
       }
     }
 
-    // Initial load check: If token is present, initialize IAM Dashboard directly
+    // Auto-initialize if token exists
     if (token) {
       initDashboard();
     }

@@ -23,7 +23,9 @@ public static class DbSeeder
                 StaffName = "System SuperAdmin",
                 Department = "Administration",
                 EmailConfirmed = true,
-                IsActive = true
+                IsActive = true,
+                IsMfaEnabled = false,   // Ensures MFA is explicitly disabled on fresh seed
+                MfaSecretKey = null     // Clears any leftover secret key
             };
 
             var result = await userManager.CreateAsync(adminUser, "Admin@1234");
